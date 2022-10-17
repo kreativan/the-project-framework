@@ -1,0 +1,27 @@
+/* =========================================================== 
+  Grid
+=========================================================== */
+
+.p-grid {
+
+  display: grid;
+  grid-auto-columns: auto;
+
+  &.p-grid-gap {
+    grid-gap: @gutter;
+  }
+
+  &.p-grid-6 {grid-template-columns: repeat(6, 1fr);}
+  &.p-grid-5 {grid-template-columns: repeat(5, 1fr);}
+  &.p-grid-4 {grid-template-columns: repeat(4, 1fr);}
+  &.p-grid-3 {grid-template-columns: repeat(3, 1fr);}
+  &.p-grid-2 {grid-template-columns: 1fr 1fr;}
+  &.p-grid-1 {grid-template-columns: 1fr;}
+
+  @media(max-width: 1279px) {
+    & {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+}

@@ -1,0 +1,61 @@
+//--------------------------------------------------------
+//  Variables
+//--------------------------------------------------------
+
+@font-size-small: 0.85rem;
+
+@margin: 20px;
+@margin-sm: 10px;
+@margin-lg: 40px;
+@gutter: 20px;
+@padding: 15px;
+
+@primary-color: #0783BE;
+@muted-color: #f8f8f8;
+@emphasis-color: #1d2327;
+@danger-color: #b32d2e;
+@success-color: #00a32a;
+
+@bg-primary: #0783BE;
+@bg-primary-dark: #0875a9;
+@bg-muted: #f8f8f8;
+
+@border-radius: 5px;
+@border-color: #d0d2d5;
+
+@shadow: 0px 1px 2px rgba(16, 24, 40, 0.1);
+
+//-------------------------------------------------------
+//  Imports
+//--------------------------------------------------------
+
+@import "less/utility.less";
+@import "less/acf.less";
+@import "less/card.less";
+@import "less/flex.less";
+@import "less/grid.less";
+@import "less/table.less";
+@import "less/button.less";
+@import "less/form.less";
+@import "less/list.less";
+@import "less/swal.less";
+
+//--------------------------------------------------------
+//  Layout
+//--------------------------------------------------------
+
+#wpbody {
+  padding-right: @gutter;
+}
+
+.php-error #adminmenuback, .php-error #adminmenuwrap {
+  margin-top:0;
+}
+
+#adminmenu li.wp-menu-separator {
+  height: 1px;
+  padding: 0;
+  margin: 0 0 6px;
+  cursor: inherit;
+  background: rgba(255, 255, 255, 0.15);
+}

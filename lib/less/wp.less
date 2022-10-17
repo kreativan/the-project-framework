@@ -1,0 +1,80 @@
+/* =========================================================== 
+  Table
+=========================================================== */
+
+table:not(.uk-table) {
+
+  .uk-table();
+
+  tr {
+    border:1px solid @global-border;
+  }
+
+  th,
+  td  {
+    padding: 10px;
+    text-align: left;
+  }
+
+}
+
+textarea:not(.uk-textarea) {
+  .uk-textarea();
+}
+
+/* =========================================================== 
+  Form
+=========================================================== */
+
+label:not(.uk-form-label):not(.uk-label) {
+  .uk-form-label();
+}
+
+input:not(.uk-input):not([type=checkbox]):not([type=radio]) {
+  .uk-input();
+}
+
+select:not(.uk-select) {
+  .uk-select();
+}
+
+input[type=submit]:not(.uk-button) {
+
+  .uk-button();
+  .uk-button-default();
+
+  &:active, 
+  &:focus, 
+  &:hover {
+    cursor: pointer;
+    background-color: @button-default-hover-background;
+    color: @button-default-hover-color;
+  }
+
+}
+
+.hook-form-single-line() {
+  &.error {
+    border-color: @form-danger-border;
+  }
+}
+
+.hook-form-multi-line() {
+  &.error {
+    border-color: @form-danger-border;
+  }
+}
+
+/* =========================================================== 
+  Pagination
+=========================================================== */
+
+.page-numbers {
+  .uk-pagination();
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  a:hover {
+    text-decoration :none;
+  }
+}

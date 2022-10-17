@@ -1,0 +1,72 @@
+@table-padding: 13px 10px;
+@table-padding-sm: 7px 10px;
+
+/* =========================================================== 
+  Table
+=========================================================== */
+
+.p-table {
+
+  width:100%;
+  border-collapse:collapse;
+
+  td {
+    padding: @table-padding;
+    vertical-align: middle;
+  }
+
+  th {
+    vertical-align: middle;
+    text-align: left;
+    color: @emphasis-color;
+    padding: @table-padding;
+  }
+
+  fieldset label {
+    margin-right: @margin;
+  }
+
+  &.p-table-sm {
+
+    th, td {
+      padding: @table-padding-sm;
+    }
+
+  }
+
+  &.p-table-striped tbody {
+    
+    tr:nth-child(odd) {
+      background: @bg-muted;
+    }
+
+  }
+
+  &.p-table-divider tbody {
+    tr + tr {
+      border-top: 1px solid #ddd;
+    }
+  }
+
+}
+
+.p-card .form-table {
+
+  th,td {
+    padding: 5px 10px;
+    vertical-align: middle;
+  }
+
+  label {
+    margin:0;
+  }
+
+  label + label {
+    margin-left: @margin !important;
+  }
+
+  tr:nth-child(odd) {
+    background: @bg-muted;
+  }
+  
+}
