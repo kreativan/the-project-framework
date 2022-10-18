@@ -104,13 +104,15 @@ class The_Project {
 
   // Sync data with wp global settings
   public function sync_website_settings() {
-    $site_name = site_settings("site_name");
-    $about = site_settings("about");
-    $words = str_word_count($about, 2);
-    $pos = array_keys($words);
-    $about = substr($about, 0, $pos[6]);
-    update_option("blogname", $site_name);
-    update_option("blogdescription", $about);
+    add_action('after_setup_theme', function() {
+      $site_name = site_settings("site_name");
+      $about = site_settings("about");
+      $words = str_word_count($about, 2);
+      $pos = array_keys($words);
+      $about = substr($about, 0, $pos[6]);
+      update_option("blogname", $site_name);
+      update_option("blogdescription", $about);
+    });
   }
 
   /**
