@@ -4,14 +4,16 @@
  * @param object $img 
  * @param string $size
  */
-function tpf_image($img, $size = "") {
+function tpf_image($img, $size = "", $class = "") {
   if(empty($img) || $img == "") return false;
   $img_size = ($size != "") ? $size : "medium";
   $src = $img['sizes'][$img_size];
   $width = $img['sizes']["{$img_size}-width"];
   $height = $img['sizes']["{$img_size}-height"];
   $alt = $img['alt'] != '' ? $img['alt'] : $img['title'];
-  return "<img data-src='{$src}' width='$width' height='$height' alt='{$alt}' uk-img />";
+  $cls = "";
+  if($class != "") $cls = "class='$class'";
+  return "<img {$cls} data-src='{$src}' width='$width' height='$height' alt='{$alt}' uk-img />";
 }
 
 /**

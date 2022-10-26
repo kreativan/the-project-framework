@@ -50,7 +50,7 @@ class The_Project {
      * Render layout file on htmx request
      * @example ./?htmx=layout/home/hero
      */
-    add_action('after_setup_theme', function() {
+    add_action('acf/init', function() {
 
       if(!is_admin() && $this->get_htmx_file()) {
         $layout = $this->get_htmx_file();

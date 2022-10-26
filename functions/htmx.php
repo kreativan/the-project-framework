@@ -17,7 +17,7 @@ function htmx_req($file_path,  $config = [], $data = []) {
   $swap = !empty($config["swap"]) ? $config["swap"] : false;
   $indicator = !empty($config["indicator"]) ? $config["indicator"] : false;
   $push_url = !empty($config["push_url"]) ? $config["push_url"] : false;
-  $vals = !empty($data["vals"]) ? $data["vals"] : false;
+  $vals = count($data) > 0 ? $data : false;
   if($vals && is_array($vals)) $vals = json_encode($vals);
 
   $attr = "hx-get='./?htmx={$file_path}'";
