@@ -1,20 +1,33 @@
 <?php
 /**
  * Image
- * @param object $img 
- * @param string $size
+ * @param object $image 
+ * @param array $options
  */
-function tpf_image($img, $size = "", $class = "") {
-  if(empty($img) || $img == "") return false;
-  $img_size = ($size != "") ? $size : "medium";
-  $src = $img['sizes'][$img_size];
-  $width = $img['sizes']["{$img_size}-width"];
-  $height = $img['sizes']["{$img_size}-height"];
-  $alt = $img['alt'] != '' ? $img['alt'] : $img['title'];
+
+function tpf_image($image, $options = []) {
+
+  if(empty($image) || $image == "") return false;
+
+  $size = isset($options['size']) ? $options['size'] : 'large';
+  $class = isset($options['class']) ? $options['class'] : "";
+  $eager = isset($options['eager']) && $options['eager'] == 1 ? true : false;
+
+  $src = $image['sizes'][$size];
+  $width = $image['sizes']["{$size}-width"];
+  $height = $image['sizes']["{$size}-height"];
+  $alt = $image['alt'] != '' ? $image['alt'] : $image['title'];
+
   $cls = "";
+  $uk_img = "uk-img";
+
+  if($eager) $uk_img = 'uk-img="loading: eager"';
   if($class != "") $cls = "class='$class'";
-  return "<img {$cls} data-src='{$src}' width='$width' height='$height' alt='{$alt}' uk-img />";
+
+  echo "<img {$cls} data-src='{$src}' width='$width' height='$height' alt='{$alt}' {$uk_img} />";
+
 }
+
 
 /**
  * SVG
