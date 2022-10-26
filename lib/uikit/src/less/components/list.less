@@ -63,6 +63,12 @@
 }
 
 /*
+ * Avoid column break within the list item, when using `column-count`
+ */
+
+.uk-list > * { break-inside: avoid-column; }
+
+/*
  * Remove margin from the last-child
  */
 
@@ -133,6 +139,7 @@
 
 .uk-list-bullet > ::before {
     content: "";
+    display: list-item;
     position: relative;
     left: -@list-padding-left;
     width: @list-padding-left;

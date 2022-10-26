@@ -137,7 +137,6 @@ $dragover-box-shadow:                            0 0 20px rgba(100,100,100,0.3) 
 
 /*
  * Enable scrollbars if content is clipped
- * Note: Firefox ignores `padding-bottom` for the scrollable overflow https://bugzilla.mozilla.org/show_bug.cgi?id=748518
  */
 
 .uk-overflow-auto {
@@ -148,10 +147,18 @@ $dragover-box-shadow:                            0 0 20px rgba(100,100,100,0.3) 
 .uk-overflow-auto > :last-child { margin-bottom: 0; }
 
 
+/* Box Sizing
+ ========================================================================== */
+
+.uk-box-sizing-content { box-sizing: content-box; }
+.uk-box-sizing-border { box-sizing: border-box; }
+
+
 /* Resize
  ========================================================================== */
 
 .uk-resize { resize: both; }
+.uk-resize-horizontal { resize: horizontal; }
 .uk-resize-vertical { resize: vertical; }
 
 
@@ -358,8 +365,6 @@ $dragover-box-shadow:                            0 0 20px rgba(100,100,100,0.3) 
  *    https://bugzilla.mozilla.org/show_bug.cgi?id=214004
  * 2. In Firefox, a floating `::first-letter` doesn't have a line box and there for no `line-height`
  *    https://bugzilla.mozilla.org/show_bug.cgi?id=317933
- * 3. Caused by 1.: Edge creates two nested `::first-letter` containers, one for each selector
- *    This doubles the `font-size` exponential when using the `em` unit.
  */
 
 .uk-dropcap::first-letter,
@@ -381,28 +386,30 @@ $dragover-box-shadow:                            0 0 20px rgba(100,100,100,0.3) 
 
 }
 
-/* 3 */
-@supports (-ms-ime-align: auto) {
-
-  .uk-dropcap > p:first-of-type::first-letter { font-size: 1em; }
-
-}
-
 
 /* Logo
  ========================================================================== */
 
 /*
- * 1. Required for `a`
+ * 1. Style
+ * 2. Required for `a`
+ * 3. Behave like image but can be overridden through flex utility classes
  */
 
 .uk-logo {
+    /* 1 */
     font-size: $logo-font-size;
     font-family: $logo-font-family;
     color: $logo-color;
-    /* 1 */
+    /* 2 */
     text-decoration: none;
     @if(mixin-exists(hook-logo)) {@include hook-logo();}
+}
+
+/* 3 */
+:where(.uk-logo) {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 /* Hover */
@@ -413,7 +420,7 @@ $dragover-box-shadow:                            0 0 20px rgba(100,100,100,0.3) 
     @if(mixin-exists(hook-logo-hover)) {@include hook-logo-hover();}
 }
 
-.uk-logo > :where(img, svg, video) { display: block; }
+.uk-logo :where(img, svg, video) { display: block; }
 
 .uk-logo-inverse { display: none; }
 
