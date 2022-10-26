@@ -13,6 +13,13 @@ $i = 0;
     <tbody>
 
       <?php foreach($item as $field_name => $field) : ?>
+
+      <?php
+        $default = isset($field['default']) ? $field['default'] : "";
+        $value = the_project($field_name) != "" ? the_project($field_name) : $default;
+        $placeholder = isset($field['placeholder']) ? $field['placeholder'] : "";
+      ?>
+      
       <tr style="<?= isset($field['hidden']) && !$field['hidden'] ? "display: none;" : "" ?>">
 
         <th style="width:200px;font-weight: normal;"><?= $field['label'] ?></th>
@@ -21,34 +28,50 @@ $i = 0;
 
           <?php if($field['type'] == "radio") : ?>
 
-          <?php foreach($field['options'] as $key => $value) :?>
+          <?php foreach($field['options'] as $key => $label) :?>
           <label style="margin-right: 10px;">
             <input type="radio" name="project_settings[<?= $field_name ?>]" value="<?= $key ?>"
-              <?= the_project($field_name) == $key ? "checked" : "" ?> />
-            <?= $value ?>
+              <?= ($value == $key) ? "checked" : "" ?> 
+            />
+            <?= $label ?>
           </label>
           <?php endforeach; ?>
 
           <?php elseif($field['type'] == "select") : ?>
 
           <select name="project_settings[<?= $field_name ?>]">
-            <?php foreach($field['options'] as $key => $value) :?>
-            <option value="<?= $key ?>" <?= the_project($field_name) == $key ? "selected" : "" ?>>
-              <?= $value ?>
+            <?php foreach($field['options'] as $key => $label) :?>
+            <option value="<?= $key ?>" <?= ($value == $key) ? "selected" : "" ?>>
+              <?= $label ?>
             </option>
             <?php endforeach; ?>
           </select>
 
           <?php elseif($field['type'] == "text") : ?>
 
-          <input type="text" name="project_settings[<?= $field_name ?>]" value="<?= the_project($field_name) ?>" />
+          <input 
+            type="text" 
+            name="project_settings[<?= $field_name ?>]" 
+            value="<?= $value ?>" 
+            placeholder="<?= $placeholder ?>" 
+          />
 
           <?php elseif($field['type'] == "email") : ?>
-          <input type="email" name="project_settings[<?= $field_name ?>]" value="<?= the_project($field_name) ?>" />
+          <input 
+            type="email" 
+            name="project_settings[<?= $field_name ?>]" 
+            value="<?= $value ?>" 
+            placeholder="<?= $placeholder ?>" 
+          />
 
 
           <?php elseif($field['type'] == "password") : ?>
-          <input type="password" name="project_settings[<?= $field_name ?>]" value="<?= the_project($field_name) ?>" />
+          <input 
+            type="password" 
+            name="project_settings[<?= $field_name ?>]" 
+            value="<?= $value ?>" 
+            placeholder="<?= $placeholder ?>" 
+          />
 
 
           <?php endif;?>

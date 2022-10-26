@@ -7,7 +7,12 @@
  *  Author URI: http://kreativan.dev/
  */
 
-error_reporting(E_ALL ^ E_NOTICE); 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+// error_reporting(E_ALL ^ E_NOTICE); 
 
 // Settings
 include_once("settings/settings.php");
@@ -19,7 +24,7 @@ include_once("classes/post-type.php");
 include_once("classes/submenu.php");
 
 // Functions
-include_once("functions/cms.php"); 
+include_once("functions/tpf.php"); 
 include_once("functions/utility.php");
 include_once("functions/language.php");
 include_once("functions/menus.php");
@@ -29,6 +34,7 @@ include_once("functions/init.php");
 
 // Advanced Custom Fields
 include_once("acf/acf-roles-select.php");
+include_once("acf/acf-svg-select.php");
 
 //-------------------------------------------------------- 
 //  Init Project
@@ -112,9 +118,13 @@ new The_Project_Settings;
 //-------------------------------------------------------- 
 
 if(the_project("woo")) {
-
+  
   include_once("woo/functions.php");
   include_once("acf/acf-product-categories.php");
+
+  if(!the_project("woo_styles")) {
+    add_theme_support('woocommerce');
+  }
 
   // Init Discounts
   if(the_project("discounts")) {

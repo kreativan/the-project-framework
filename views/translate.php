@@ -22,7 +22,7 @@ function lng_current($str, $lang) {
   if (!file_exists($file)) return lng_def($str);
   $json = file_get_contents($file);
   $arr = json_decode($json, true);
-  ksort($arr);
+  if (is_array($arr)) ksort($arr);
   return !empty($arr[$str]) ? $arr[$str] : lng_def($str);
 }
 

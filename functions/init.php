@@ -25,10 +25,6 @@ function the_project_init() {
 
 }
 
-if(the_project("woo") == "1") {
-  add_theme_support('woocommerce');
-}
-
 // Init Translations
 // load_theme_textdomain('default', get_template_directory());
 
@@ -54,3 +50,6 @@ function the_project_custom_request($query_string ) {
 } 
 
 add_filter('request', 'the_project_custom_request');
+
+//  Menu
+// ===========================================================

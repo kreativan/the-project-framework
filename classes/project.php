@@ -54,7 +54,7 @@ class The_Project {
 
       if(!is_admin() && $this->get_htmx_file()) {
         $layout = $this->get_htmx_file();
-        tpf_render($layout, null);
+        get_template_part($layout, null, $_GET);
         exit();
       }
 
@@ -104,15 +104,12 @@ class The_Project {
 
   // Sync data with wp global settings
   public function sync_website_settings() {
-    add_action('after_setup_theme', function() {
+    if(function_exists("get_field")) {
       $site_name = site_settings("site_name");
-      $about = site_settings("about");
-      $words = str_word_count($about, 2);
-      $pos = array_keys($words);
-      $about = substr($about, 0, $pos[6]);
+      $tagline = site_settings("tagline");
       update_option("blogname", $site_name);
-      update_option("blogdescription", $about);
-    });
+      update_option("blogdescription", $tagline);
+    }
   }
 
   /**

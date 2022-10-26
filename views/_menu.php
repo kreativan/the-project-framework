@@ -9,6 +9,7 @@ $menus = wp_get_nav_menus();
     Menus
   </h2>
 
+  <?php if(count($menus) > 0) : ?>
   <ul class="p-list p-list-striped">
     <?php foreach($menus as $menu) : ?>
     <li class="p-flex p-flex-between">
@@ -23,5 +24,8 @@ $menus = wp_get_nav_menus();
     </li>
     <?php endforeach; ?>
   </ul>
+  <?php else :?>
+    No menus to display. Clieck <a href="<?= get_admin_url() ?>/nav-menus.php">here</a> to create a menu
+  <?php endif;?>
 
 </div>

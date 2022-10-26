@@ -44,3 +44,15 @@
 
 
 })();
+
+function collapseFlexibleContent() {
+  let items = document.querySelectorAll(".acf-field-flexible-content.tpf-collapse .layout");
+  console.log(items);
+  items.forEach(e => {
+    e.classList.add('-collapsed');
+  });
+}
+
+window.addEventListener("DOMContentLoaded", function() {
+  collapseFlexibleContent();
+})

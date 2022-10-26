@@ -10,25 +10,17 @@ function is_project_htmx() {
  * Htmx request attributes
  * @return string
  */
-function htmx_req($file_path,  $data = []) {
+function htmx_req($file_path,  $config = [], $data = []) {
 
-  // use file, get or post
-  $file = !empty($data["file"]) ? $data["file"] : false;
-  $get = !empty($data["get"]) ? $data["get"] : false;
-  $post = !empty($data["post"]) ? $data["post"] : false;
-  if(!$get && !$post && !$file) return false;
-
-  $trigger = !empty($data["trigger"]) ? $data["trigger"] : "click";
-  $target = !empty($data["target"]) ? $data["target"] : false;
-  $swap = !empty($data["swap"]) ? $data["swap"] : false;
-  $indicator = !empty($data["indicator"]) ? $data["indicator"] : false;
-  $push_url = !empty($data["push_url"]) ? $data["push_url"] : false;
+  $trigger = !empty($config["trigger"]) ? $config["trigger"] : "click";
+  $target = !empty($config["target"]) ? $config["target"] : false;
+  $swap = !empty($config["swap"]) ? $config["swap"] : false;
+  $indicator = !empty($config["indicator"]) ? $config["indicator"] : false;
+  $push_url = !empty($config["push_url"]) ? $config["push_url"] : false;
   $vals = !empty($data["vals"]) ? $data["vals"] : false;
   if($vals && is_array($vals)) $vals = json_encode($vals);
 
-  if($file) $attr = "hx-get='{$this->url}{$file}'";
-  if($get) $attr = "hx-get='{$this->url}{$get}'";
-  if($post) $attr = "hx-post='{$this->url}{$post}'";
+  $attr = "hx-get='./?htmx={$file_path}'";
   $attr .= " hx-trigger='$trigger'";
   if($target) $attr .= " hx-target='$target'";
   if($swap) $attr .= " hx-swap='$swap'";

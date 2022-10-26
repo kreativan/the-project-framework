@@ -13,19 +13,20 @@
   <div class="p-grid p-grid-gap p-grid-2">
 
     <div class="left">
-      <?php tpf_render("views/_info.php") ?>
-      <?php tpf_render("views/_menu.php") ?>
-      <?php
-        do_action('tpf_dashboard_grid_left');
-      ?>
-    </div>
-
-    <div class="right">
       <?php 
+        tpf_render("views/_info.php");
         if(the_project('user_groups')) {
           tpf_render("views/_user-groups.php");
         }
       ?>
+      <?php
+        do_action('tpf_dashboard_grid_left');
+      ?>
+      
+    </div>
+
+    <div class="right">
+     <?php tpf_render("views/_menu.php") ?>
       <?php
         do_action('tpf_dashboard_grid_right');
       ?>

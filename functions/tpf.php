@@ -7,16 +7,25 @@ function dump($var) {
 /**
  * Get tpf plugin directory path
  */
-function the_project_dir() {
+function tpf_dir() {
   return WP_PLUGIN_DIR . "/the-project-framework/";
 }
 
 /**
  * Get tpf plugin directory url
  */
-function the_project_url() {
+function tpf_url() {
   return plugin_dir_url(__DIR__);
 }
+
+function the_project_dir() {
+  return tpf_dir();
+}
+
+function the_project_url() {
+  return tpf_url();
+}
+
 
 /**
  * Project info and developer settings
@@ -34,19 +43,25 @@ function the_project($field = "") {
 
 }
 
+function tpf($field = "") {
+  return the_project($field);
+}
+
 /**
  * Site settings defined in ACF options
  */
 function site_settings($field) {
-  $value = get_field("$field", 'options');
-  return !empty($value) ? $value : false;
+  if(function_exists("get_field")) {
+    $value = get_field("$field", 'options');
+    return !empty($value) ? $value : false;
+  }
 }
 
 
 /**
  * Check if current route is ajax
  */
-function is_project_ajax() {
+function tpf_is_ajax_route() {
   $url = explode("/", $_SERVER['REQUEST_URI']);
   if($url[1] == 'ajax') return true;
   return false;

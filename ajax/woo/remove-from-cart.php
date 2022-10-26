@@ -23,7 +23,7 @@ wc_clear_notices();
 
 // htmx response
 $response['htmx'] = [
-  'url' => '/htmx/layout/woo/cart-list/',
+  'url' => './?=htmx=layout/woo/cart-list',
   'type' => 'GET',
   'target' => '#offcanvas-cart-list',
   'swap' => 'innerHTML',

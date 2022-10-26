@@ -20,12 +20,19 @@ $project = [
   "name" => [
     "type" => "text",
     "label" =>  "Name",
+    "default" => "The Project",
   ],
   "icon" => [
     "type" => "select",
     "label" =>  "Icon",
     "options" => $dashicons_custom_array,
+    "default" => "superhero",
   ],
+  "svg_folder" => [
+    "type" => 'text',
+    "label" => "SVG Folder",
+    "placeholder" => "/assets/svg/",
+  ]
 ];
 
 //  Dev
@@ -38,6 +45,7 @@ $dev = [
       "1" => "Enabled",
       "0" => "Disabled"
     ],
+    "default" => "1",
   ],
   "project_js" => [
     "type" => "radio",
@@ -46,6 +54,7 @@ $dev = [
       "1" => "Enabled",
       "0" => "Disabled"
     ],
+    "default" => "1",
   ],
   "ajax" => [
     "type" => "radio",
@@ -54,6 +63,7 @@ $dev = [
       "1" => "Enabled",
       "0" => "Disabled"
     ],
+    "default" => "1",
   ],
   "htmx" => [
     "type" => "radio",
@@ -62,6 +72,7 @@ $dev = [
       "1" => "Enabled",
       "0" => "Disabled"
     ],
+    "default" => "1",
   ],
   "assets_suffix" => [
     "type" => "text",
@@ -81,6 +92,7 @@ $smtp = [
       "1" => "Enabled",
       "0" => "Disabled"
     ],
+    "default" => "0",
   ],
   "smtp_from_email" => [
     "type" => "email",
@@ -135,6 +147,7 @@ $addons = [
       "1" => "Enabled",
       "0" => "Disabled"
     ],
+    "default" => "1",
   ],
   "translations" => [
     "type" => "radio",
@@ -143,6 +156,7 @@ $addons = [
       "1" => "Enabled",
       "0" => "Disabled"
     ],
+    "default" => "1",
   ],
   "user_groups" => [
     "type" => "radio",
@@ -151,6 +165,7 @@ $addons = [
       "1" => "Enabled",
       "0" => "Disabled"
     ],
+    "default" => "0",
   ],
   "discounts" => [
     "type" => "radio",
@@ -160,6 +175,7 @@ $addons = [
       "0" => "Disabled"
     ],
     "hidden" => the_project("woo") ? "1" : "0",
+    "default" => "0",
   ],
 ];
 
@@ -174,6 +190,7 @@ $woo = [
       "1" => "Enabled",
       "0" => "Disabled"
     ],
+    "default" => "0",
   ],
   "woo_scripts" => [
     "type" => "radio",
@@ -183,6 +200,7 @@ $woo = [
       "0" => "Disabled"
     ],
     "hidden" => the_project("woo") ? "1" : "0",
+    "default" => "1",
   ],
   "woo_styles" => [
     "type" => "radio",
@@ -192,6 +210,7 @@ $woo = [
       "0" => "Disabled"
     ],
     "hidden" => the_project("woo") ? "1" : "0",
+    "default" => "0",
   ],
   "woo_js" => [
     "type" => "radio",
@@ -201,6 +220,7 @@ $woo = [
       "0" => "Disabled"
     ],
     "hidden" => the_project("woo") ? "1" : "0",
+    "default" => "1",
   ],
 ];
 
@@ -210,8 +230,11 @@ $woo = [
 $array_left['Project'] = $project;
 $array_left['Developer Options'] = $dev;
 $array_left['SMTP'] = $smtp;
-$array_left['WooCommerce'] = $woo;
 $array_left['Add-ons'] = $addons;
+
+if ( class_exists( 'WooCommerce' ) ) {
+  $array_left['WooCommerce'] = $woo;
+}
 
 ?>
 

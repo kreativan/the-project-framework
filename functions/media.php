@@ -1,5 +1,88 @@
 <?php
 /**
+ * Image
+ * @param object $img 
+ * @param string $size
+ */
+function tpf_image($img, $size = "") {
+  if(empty($img) || $img == "") return false;
+  $img_size = ($size != "") ? $size : "medium";
+  $src = $img['sizes'][$img_size];
+  $width = $img['sizes']["{$img_size}-width"];
+  $height = $img['sizes']["{$img_size}-height"];
+  $alt = $img['alt'] != '' ? $img['alt'] : $img['title'];
+  return "<img data-src='{$src}' width='$width' height='$height' alt='{$alt}' uk-img />";
+}
+
+/**
+ * SVG
+ *
+ */
+
+function tpf_svg_uri() {
+  if(the_project("svg_folder")) {
+    return get_template_directory_uri() . the_project('svg_folder');
+  } else {
+    return get_template_directory_uri() . "/assets/svg/";
+  }
+}
+
+function tpf_svg_dir() {
+  if(the_project("svg_folder")) {
+    return get_template_directory() . the_project('svg_folder');
+  } else {
+    return get_template_directory() . "/assets/svg/";
+  }
+}
+
+
+/**
+ *  Render SVG
+ *  @param string $svg_file - svg file path relative to the theme folder
+ *  @param array $options
+ *  @return markup
+ */
+function tpf_svg($svg_file, $options = []) {
+  $svg_file = get_template_directory() . "{$svg_file}.svg";
+  if(!file_exists($svg_file)) return false;
+
+  // Options
+  $type = !empty($options["type"]) ? $options["type"] : "stroke"; // stroke / fill
+  $color = !empty($options["color"]) ? $options["color"] : ""; // hex
+  $size = !empty($options["size"]) ? $options["size"] : "28px"; // px
+  $class = "svg-$type";
+  $class .= !empty($options["class"]) ? " " . $options["class"] : "";
+  $sty = !empty($options["style"]) ? $options["style"] : ""; // style=""
+
+  $style = "width:$size;height:$size;";
+  if($color != "") {
+    $style .= ($type == "stroke") ? "stroke: $color;" : "fill: $color;";
+  }
+  $style .= !empty($sty) ? " $sty" : "";
+
+  $svg = file_get_contents($svg_file);
+  echo "<span class='svg {$class}' style='{$style}'>{$svg}</span>";
+}
+
+
+/**
+ *  Get Youtube embed url from regular url
+ *  @param $url - regular youtube url
+ */
+function tpf_youtube($url) {
+  $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_-]+)\??/i';
+  $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))([a-zA-Z0-9_-]+)/i';
+  if (preg_match($longUrlRegex, $url, $matches)) {
+    $youtube_id = $matches[count($matches) - 1];
+  }
+  if (preg_match($shortUrlRegex, $url, $matches)) {
+    $youtube_id = $matches[count($matches) - 1];
+  }
+  return 'https://www.youtube.com/embed/' . $youtube_id ;
+}
+
+
+/**
  *  Render Picture
  *  @param object $image
  *  @example $source = ["max-width: 600px" => $image['sizes']['600'];
@@ -57,48 +140,4 @@ function tpf_picture($image, $args = []) {
   $html .= "</picture>";
 
   echo $html;
-}
-
-/**
- *  Render SVG
- *  @param string $svg_file - svg file path relative to the theme folder
- *  @param array $options
- *  @return markup
- */
-function tpf_svg($svg_file, $options = []) {
-  $svg_file = get_template_directory() . "{$svg_file}.svg";
-  if(!file_exists($svg_file)) return false;
-
-  // Options
-  $type = !empty($options["type"]) ? $options["type"] : "stroke"; // stroke / fill
-  $color = !empty($options["color"]) ? $options["color"] : ""; // hex
-  $size = !empty($options["size"]) ? $options["size"] : "28px"; // px
-  $class = "svg-$type";
-  $class .= !empty($options["class"]) ? " " . $options["class"] : "";
-  $sty = !empty($options["style"]) ? $options["style"] : ""; // style=""
-
-  $style = "width:$size;height:$size;";
-  if($color != "") {
-    $style .= ($type == "stroke") ? "stroke: $color;" : "fill: $color;";
-  }
-  $style .= !empty($sty) ? " $sty" : "";
-
-  $svg = file_get_contents($svg_file);
-  echo "<span class='svg {$class}' style='{$style}'>{$svg}</span>";
-}
-
-/**
- *  Get Youtube embed url from regular url
- *  @param $url - regular youtube url
- */
-function tpf_youtube($url) {
-  $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_-]+)\??/i';
-  $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))([a-zA-Z0-9_-]+)/i';
-  if (preg_match($longUrlRegex, $url, $matches)) {
-    $youtube_id = $matches[count($matches) - 1];
-  }
-  if (preg_match($shortUrlRegex, $url, $matches)) {
-    $youtube_id = $matches[count($matches) - 1];
-  }
-  return 'https://www.youtube.com/embed/' . $youtube_id ;
 }
