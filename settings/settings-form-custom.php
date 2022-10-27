@@ -47,9 +47,9 @@ $dev = [
     ],
     "default" => "1",
   ],
-  "project_js" => [
+  "tpf_js" => [
     "type" => "radio",
-    "label" =>  "Load project.js",
+    "label" =>  "Load tpf.js",
     "options" => [
       "1" => "Enabled",
       "0" => "Disabled"

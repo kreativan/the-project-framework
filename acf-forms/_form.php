@@ -122,7 +122,7 @@ $captcha = get_field('captcha', $id);
   <?php endif;?>
 
   <div class="uk-margin-top">
-    <button type="button" class="uk-button uk-button-<?= $button_style ?>" onclick="project.formSubmit('form-<?= $form->post_name ?>')">
+    <button type="button" class="uk-button uk-button-<?= $button_style ?>" onclick="tpf.formSubmit('form-<?= $form->post_name ?>')">
       <?= get_field('submit_button_text', $id) ?>
     </button>
     <span class="ajax-indicator uk-hidden uk-margin-left" uk-spinner></span>

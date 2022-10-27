@@ -41,7 +41,7 @@ include_once("acf/acf-svg-select.php");
 //-------------------------------------------------------- 
 
 $js_files = [];
-if(the_project('project_js')) $js_files['project_js'] = plugin_dir_url(__FILE__) . "lib/js/project.js"; 
+if(the_project('tpf_js')) $js_files['tpf_js'] = plugin_dir_url(__FILE__) . "lib/js/tpf.js"; 
 if(the_project('woo_js')) $js_files['woo_js'] = plugin_dir_url(__FILE__) . "lib/js/woo.js"; 
 
 new The_Project([

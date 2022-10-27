@@ -38,7 +38,7 @@ function htmx_modal($file_path, $data = []) {
   $attr = "hx-get='./?htmx={$file_path}'";
   $attr .= ' hx-target="body"';
   $attr .= ' hx-swap="beforeend"';
-  $onclick = "project.htmxModal()";
+  $onclick = "tpf.htmxModal()";
   $attr .= " onclick=$onclick";
   if(count($data) > 0) {
     $vals = json_encode($data);
@@ -54,7 +54,7 @@ function htmx_offcanvas($file_path, $data = []) {
   $attr = "hx-get='./?htmx={$file_path}'";
   $attr .= ' hx-target="body"';
   $attr .= ' hx-swap="beforeend"';
-  $onclick = "project.htmxOffcanvas()";
+  $onclick = "tpf.htmxOffcanvas()";
   $attr .= " onclick=$onclick";
   if(count($data) > 0) {
     $vals = json_encode($data);
