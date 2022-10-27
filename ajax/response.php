@@ -35,6 +35,12 @@ $response = [
     "indicator" => "#htmx-indicator",
     "push_url" => "./",
   ],
+  // Will set a cookie on response
+  "cookie" => [
+    "name" => "my_cookie",
+    "value" => 1,
+    "days" => 30,
+  ],
   // Log $_POST data
   "post" => $_POST,
   // Log $_GET data
