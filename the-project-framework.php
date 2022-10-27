@@ -21,6 +21,7 @@ include_once("settings/settings.php");
 include_once("classes/less-compiler.php"); 
 include_once("classes/project.php");
 include_once("classes/post-type.php");
+include_once("classes/admin-columns.php");
 include_once("classes/submenu.php");
 
 // Functions
