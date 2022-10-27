@@ -8,6 +8,7 @@ $response = [
   "message" => "Some response message",
   // Notification, will trigger uikit notification
   "notification" => "Notification: Ajax form submit was ok!",
+  "notification_pos" => "top-right",
   // Will trigger modal on response, has priority over notification
   "modal" => "<h3>Title</h3><p>text</p>", 
   // Same as 'modal'. Will trigger modal response, has priority over notification
