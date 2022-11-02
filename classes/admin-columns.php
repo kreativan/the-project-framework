@@ -1,6 +1,6 @@
-<?php
+<?php namespace TPF;
 
-class The_Project_Admin_Columns {
+class Admin_Columns {
 
 
   public function __construct($post_type, $data = []) {
@@ -19,19 +19,37 @@ class The_Project_Admin_Columns {
   }
 
   public function admin_columns_label($columns) {
-    $columns = [
-      'cb' => $columns['cb'],
-      'title' => __( 'Title' ),
-    ];
+    
+    $columns = ['cb' => $columns['cb']];
+
+    if( isset($this->data['thumb']) ) {
+      $columns['thumb'] = __( 'Image' );
+    }
+
+    $columns['title'] = __( 'Title' );
+
     foreach($this->data as $key => $value) {
       $columns["$key"] = $value;
     }
+
     return $columns;
+
   }
 
   public function admin_columns_data($column, $post_id) {
     foreach($this->data as $key => $value) {
-      if($column === $key) echo get_post_meta($post_id, $key, true);
+      if($column === "id") {
+        echo $post_id;
+      }elseif($column === $key) {
+        $post_data = get_post_meta($post_id, $key, true);
+        if(is_array($post_data)) {
+          $str = "";
+          foreach($post_data as $item) $str .= "$item<br />";
+          echo $str;
+        } else {
+          echo $post_data;
+        }
+      }
     }
   }
 

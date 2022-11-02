@@ -1,4 +1,4 @@
-<?php
+<?php namespace TPF;
 /**
  *  Plugin Name: The Project Framework
  *  Description: Framework for building custom websites
@@ -18,33 +18,35 @@ if ( ! defined( 'WPINC' ) ) {
 include_once("settings/settings.php");
 
 // Classes
+include_once("classes/tpf.php");
+include_once("classes/acf.php");
+
+include_once("classes/utility.php");
 include_once("classes/less-compiler.php"); 
 include_once("classes/project.php");
 include_once("classes/post-type.php");
 include_once("classes/admin-columns.php");
 include_once("classes/submenu.php");
+include_once("classes/form.php");
 
 // Functions
 include_once("functions/tpf.php"); 
-include_once("functions/utility.php");
 include_once("functions/language.php");
 include_once("functions/menus.php");
-include_once("functions/media.php");
-include_once("functions/htmx.php");
 include_once("functions/init.php");
 
-// Advanced Custom Fields
-include_once("acf/acf-roles-select.php");
-include_once("acf/acf-svg-select.php");
-
-//-------------------------------------------------------- 
-//  Init Project
-//-------------------------------------------------------- 
+// TPF object
+$tpf = new \TPF();
 
 $js_files = [];
 if(the_project('tpf_js')) $js_files['tpf_js'] = plugin_dir_url(__FILE__) . "lib/js/tpf.js"; 
 if(the_project('woo_js')) $js_files['woo_js'] = plugin_dir_url(__FILE__) . "lib/js/woo.js"; 
 
+
+/**
+ * Init Project
+ *
+ */
 new The_Project([
 
   // Project Title
@@ -108,103 +110,43 @@ new The_Project([
 
 ]);
 
-//-------------------------------------------------------- 
-// Init Project Settings (Developer Settings)
-//-------------------------------------------------------- 
-
+// Create The ProjectSettings
 new The_Project_Settings;
 
-//-------------------------------------------------------- 
-//  WooCommerce
-//-------------------------------------------------------- 
+// Advanced Custom Fields Utilities
+new ACF();
 
-if(the_project("woo")) {
-  
-  include_once("woo/functions.php");
-  include_once("acf/acf-product-categories.php");
-
-  if(!the_project("woo_styles")) {
-    add_theme_support('woocommerce');
-  }
-
-  // Init Discounts
-  if(the_project("discounts")) {
-    include_once("woo/discounts.php");
-    new The_Project_Discounts;
-  }
-
+// SMTP
+if($tpf->settings('smtp_enable')) {
+  include_once("addons/smtp.php");
+  new SMTP();
 }
 
-//-------------------------------------------------------- 
-//  SMTP
-//  Enable and set up SMPT from developer settings
-//-------------------------------------------------------- 
-
-if(the_project('smtp_enable') == '1') {
-
-  add_action( 'phpmailer_init', 'the_project_SMTP' );
-
-  function the_project_SMTP($phpmailer) {
-
-    $from_email = the_project('smtp_from_email');
-    $from_name = the_project('smtp_from_name');
-
-    $phpmailer->IsSMTP();
-    $phpmailer->SetFrom($from_email, $from_name);
-    $phpmailer->Host = the_project('smtp_host');
-    $phpmailer->Port = the_project('smtp_port');
-    $phpmailer->SMTPAuth = true;
-    $phpmailer->SMTPSecure = the_project('smtp_secure');
-    $phpmailer->Username = the_project('smtp_username');
-    $phpmailer->Password = the_project('smtp_password');
-
-  }
-
+// ACF Based Forms
+if($tpf->settings('forms')) {
+  include_once("addons/acf-forms.php");
+  new ACF_Forms(true);
 }
 
-//-------------------------------------------------------- 
-//  Forms
-//-------------------------------------------------------- 
-
-if(the_project('forms')) {
-
-  include_once("acf-forms/_submit.php");
-  add_action('after_setup_theme', 'acf_form_submit');
-
-  new The_Project_Post_Type([
-    "name" => "project-forms",
-    "title" => 'Forms',
-    "item_title" => 'Form',
-    "show_in_menu" => "false",
-    "show_in_nav_menus" => "false",
-    "menu_position" => 1,
-    "menu_icon" => 'dashicons-feedback',
-    "hierarchical" => "true", // true=pages, false=posts
-    "exclude_from_search" => "true",
-    "supports" => ['title'],
-    "has_archive" => "false",
-    "taxonomy" => "false",
-    "admin_columns" => [
-      'id' => 'ID',
-      'acf_form_code' => 'Function',
-    ],
-  ]);
-  
-  new The_Project_Sub_Menu([
-    "title" => __('Forms'),
-    "slug" => "edit.php?post_type=project-forms"
-  ]);
-
-}
-
-//-------------------------------------------------------- 
-//  Translations
-//-------------------------------------------------------- 
-
-if(the_project('translations')) {
-  new The_Project_Sub_Menu([
+// Translations
+if($tpf->settings('translations')) {
+  new Submenu([
     "title" => "Translate",
     "slug" => "project-translate",
     "view" => "translate",
   ]);
+}
+
+// WooCommerce
+if($tpf->settings('woo')) {
+
+  include_once("addons/woo.php");
+  include_once("addons/discounts.php");
+
+  new Woo;
+
+  if($tpf->settings('discounts')) {
+    new Discounts;
+  }
+
 }

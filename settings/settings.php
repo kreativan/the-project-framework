@@ -1,4 +1,4 @@
-<?php
+<?php namespace TPF;
 /**
  *  Developer Settings
  *  @author Ivan Milincic <kreativan.dev@gmail.com>

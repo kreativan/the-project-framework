@@ -2,6 +2,8 @@
 
 function acf_form_submit() {
 
+  $util = new TPF_Utility();
+
   if (!isset($_POST)) return;
   if (!isset($_POST['nonce'])) return;
   if (!isset($_POST['form_id'])) return;
@@ -30,7 +32,7 @@ function acf_form_submit() {
 
   if (!empty($_POST['form_id'])) {
 
-    if( !wp_verify_nonce($_POST['nonce'], "ajax-nonce") ) exit();
+    if( !wp_verify_nonce($_POST['nonce'], "acf-ajax-nonce") ) exit();
 
     $form_id = sanitize_text_field($_POST['form_id']);
     $form_fields = get_field('form_fields', $form_id);
@@ -80,7 +82,7 @@ function acf_form_submit() {
     //  Validate
     //-------------------------------------------------------- 
     
-    $v = tpf_valitron($_POST);
+    $v = $util->valitron($_POST);
     $v->rule('required', $req_array); 
     $v->rule('email', $email_array);
     $v->labels($labels_array);
@@ -291,7 +293,6 @@ function acf_form_submit() {
 
 
     }
-
 
     //  Response
     // ===========================================================

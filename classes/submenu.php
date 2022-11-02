@@ -1,11 +1,11 @@
-<?php
+<?php namespace TPF;
 /**
  *  Project Menu Class
  *  @author Ivan Milincic <kreativan.dev@gmail.com>
  *  @link http://kraetivan.dev
  */
 
-class The_Project_Sub_Menu {
+class Submenu {
 
   public function __construct($data) {
 
@@ -26,7 +26,7 @@ class The_Project_Sub_Menu {
     $callback = ($this->view != "") ? [$this, "project_menu_callback"] : "";
 
     add_submenu_page(
-      $this->parent, // main menu slug
+      'project', // main menu slug
       $this->title, // title
       $this->title, // menu_title
       'manage_options', // permision

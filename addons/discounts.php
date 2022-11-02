@@ -1,39 +1,33 @@
-<?php
+<?php namespace TPF;
 /**
  *  WooCommerce discounts
  *  @author Ivan Milincic <kreativan.dev@gmail.com>
  *  @link http://kraetivan.dev
 */
 
-class The_Project_Discounts {
+class Discounts {
 
   public function __construct($data = []) {
-    
-    // Create post type
-    new The_Project_Post_Type([
-      "name" => "project_discounts",
-      "slug" => 'project-discounts',
-      "title" => __('Discounts'),
-      "item_title" => __('Discount'),
-      "show_in_menu" => "false", // do not show in root admin menu
-      "show_in_nav_menus" => "false",
-      "exclude_from_search" => "false",
-      "supports" => ['title'],
-      "has_archive" => "false",
-      "taxonomy" => "false",
+
+    new Post_Type([
+      'name' => "project_discounts",
+      "title" => 'Discounts',
+      "singular_name" => "Discount",
+      "icon" => "dashicons-feedback",
+      "menu_position" => 5,
+      "submenu_title" => "Discounts",
       "admin_columns" => [
         'enable' => 'Enabled',
         'percent' => 'Percent',
         'user_roles' => 'Roles',
         'discount_product_category' => 'Categories'
-      ]
+      ],
     ]);
 
-    // Create submenu
-    new The_Project_Sub_Menu([
-      "title" => __('Discounts'),
-      "slug" => "edit.php?post_type=project_discounts" // sort by latest
-    ]);
+    // populate discount_product_category
+    if(is_admin()) {
+      add_filter('acf/load_field/name=discount_product_category', [$this, 'acf_product_categories']);
+    }
 
     // Run filter
     if(!is_admin() && $this->is_discount()) {
@@ -42,6 +36,21 @@ class The_Project_Discounts {
       add_filter('woocommerce_product_get_price', [$this, 'apply_discount'], 10, 2);
     }
 
+  }
+
+  /** populate discount_product_category */
+  public function acf_product_categories($field) {
+     // reset choices
+    $field['choices'] = [];
+    $array = [];
+
+    $categories = get_terms( ['taxonomy' => 'product_cat'] );
+    foreach($categories as $cat) {
+      $array[$cat->slug] = $cat->name;
+    }
+    $field['choices'] = $array;
+
+    return $field;
   }
 
   //-------------------------------------------------------- 

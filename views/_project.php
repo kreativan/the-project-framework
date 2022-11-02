@@ -3,7 +3,7 @@
   <h2 class="p-flex p-flex-between">
     <span>
       <i class="dashicons-before dashicons-dashboard"></i>
-      Info
+      Project
     </span>
     <a href="<?= get_admin_url() ?>options-general.php?page=project-settings">
       <i class="dashicons-before dashicons-admin-generic"></i>

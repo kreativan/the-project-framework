@@ -1,5 +1,7 @@
 <?php
 
+$util = new TPF_Utility();
+
 //
 //  Default Reponse
 //
@@ -27,7 +29,7 @@ if($_POST['test_form']) {
   //  Validate
   //-------------------------------------------------------- 
   
-  $v = tpf_valitron($_POST);
+  $v = $util->valitorn($_POST);
   $v->rule('required', ['name', 'email', 'message']); 
   $v->rule('email', 'email');
 

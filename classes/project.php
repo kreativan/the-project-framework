@@ -1,4 +1,4 @@
-<?php
+<?php namespace TPF;
 /**
  *  The_Project class
  *  @author Ivan Milincic <kreativan.dev@gmail.com>
