@@ -5,8 +5,6 @@
  *  @link http://kraetivan.dev
 */
 
-$tpf = new TPF();
-
 $array_left = [];
 $array_right = [];
 
@@ -259,7 +257,7 @@ if ( class_exists( 'WooCommerce' ) ) {
     <?php if(count($array_left) > 0) :?>
     <div class="left">
       <?php
-        $tpf->render("settings/loop.php", [
+        tpf_render("settings/loop.php", [
           "array" => $array_left,
         ])
       ?>
@@ -269,7 +267,7 @@ if ( class_exists( 'WooCommerce' ) ) {
     <?php if(count($array_right) > 0) :?>
     <div class="right">
       <?php
-        $tpf->render("settings/loop.php", [
+        tpf_render("settings/loop.php", [
           "array" => $array_right,
         ])
       ?>

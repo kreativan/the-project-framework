@@ -3,8 +3,6 @@
 class ACF_Forms {
 
   public function __construct($init = false) {
-
-    $this->tpf = new \TPF();
     
     if($init) {
 
@@ -30,7 +28,7 @@ class ACF_Forms {
 
   public function render($id, $args = []) {
 
-    if (!$this->tpf->settings('forms')) {
+    if (!the_project('forms')) {
       echo "<div class='uk-text-danger'>The Project forms are disabled</div>";
       return false;
     }
@@ -41,13 +39,21 @@ class ACF_Forms {
 
     $button_style = !empty($args['button_style']) ? $args['button_style'] : 'primary';
     $labels = get_field('labels', $id);
+    $grid_size = get_field('grid_size', $id);
     $form_fields = get_field('form_fields', $id);
     $action = get_field('action_url', $id);
     $action = !empty($action) ? $action : "./";
     $captcha = get_field('captcha', $id);
 
+    global $wp;
+
     // Default hidden fields
     $fields = [
+      "page" => [
+        "type" => "hidden",
+        "name" => "page",
+        "value" => home_url( $wp->request ),
+      ],
       "nonce" => [
         "type" => "hidden",
         "name" => "nonce",
@@ -70,7 +76,9 @@ class ACF_Forms {
     foreach($form_fields as $field) {
 
       $name = isset($field['name']) && !empty($field['name']) ? $field['name'] : false;
-      if(!$name) $name = sanitize_title_with_dashes($field['label']);
+      if(!$name) {
+        $name = sanitize_key($field['label']);
+      }
 
       $arr = [];
       if($field['acf_fc_layout'] == 'select' || $field['acf_fc_layout'] == "radio" || $field['acf_fc_layout'] == "checkbox") {
@@ -89,6 +97,8 @@ class ACF_Forms {
         "grid" => $field['width'],
         "options" => $arr,
         "description" => $field['description'],
+        "req" => $field['required'] == "1" ? true : false,
+        "rows" => !empty($field['rows']) ? $field['rows'] : "",
       ];
 
     }
@@ -97,10 +107,11 @@ class ACF_Forms {
     $new_form = new Form();
     $new_form->fields = $fields;
     $new_form->action = $action;
-    $new_form->id = "new-form-{$acf_form->post_name}";
+    $new_form->id = "form-{$acf_form->ID}";
     $new_form->ajax = true;
     $new_form->numb_captcha = $captcha == 1 ? true : false;
     $new_form->labels = ($labels == "1" || $labels == "3") ? true : false;
+    $new_form->grid_size = $grid_size;
     $new_form->render();
 
   }

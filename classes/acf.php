@@ -6,8 +6,7 @@ class ACF {
 
     if(is_admin()) {
       add_filter('acf/load_field/name=user_roles', [$this, 'populate_user_roles']);
-      add_filter('acf/load_field/name=select_svg', 'populate_svg');
-      add_filter('acf/load_field/name=svg_select', 'populate_svg');
+      add_filter('acf/load_field/name=select_post_type', [$this, 'populate_post_type']);
     }
 
   }
@@ -22,15 +21,16 @@ class ACF {
     return $field;
   }
 
- function populate_svg( $field ) { 
-    $tpf = new TPF();
+  public function populate_post_type( $field ) {
     $field['choices'] = [];
-    $array = [""];
-    $svg_icons = glob($tpf->svg_dir()."*");
-    foreach($svg_icons as $svg) $array[basename($svg)] = basename($svg);
-    $field['choices'] = $array;
+    $args = array(
+      'public'   => true,
+      '_builtin' => false,
+    );
+    $post_types = get_post_types($args);
+    unset($post_types['project-forms']);
+    $field['choices'] = $post_types;
     return $field;
   }
-  
 
 }

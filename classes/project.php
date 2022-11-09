@@ -28,6 +28,9 @@ class The_Project {
     //  Actions
     //
 
+    // allow svg uploads 
+    add_filter( 'upload_mimes', [$this, 'cc_mime_types'] );
+
     // Admin menu
     if($this->menu) add_action('admin_menu', [$this, 'project_admin_menu']);
 
@@ -212,6 +215,12 @@ class The_Project {
       return $layout;
     }
     return false;
+  }
+
+  // Add support for svg upload
+  public function cc_mime_types( $mimes ){
+    $mimes['svg'] = 'image/svg+xml';
+    return $mimes;
   }
 
 }

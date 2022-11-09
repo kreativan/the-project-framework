@@ -18,7 +18,6 @@ if ( ! defined( 'WPINC' ) ) {
 include_once("settings/settings.php");
 
 // Classes
-include_once("classes/tpf.php");
 include_once("classes/acf.php");
 
 include_once("classes/utility.php");
@@ -34,9 +33,8 @@ include_once("functions/tpf.php");
 include_once("functions/language.php");
 include_once("functions/menus.php");
 include_once("functions/init.php");
-
-// TPF object
-$tpf = new \TPF();
+include_once("functions/media.php");
+include_once("functions/htmx.php");
 
 $js_files = [];
 if(the_project('tpf_js')) $js_files['tpf_js'] = plugin_dir_url(__FILE__) . "lib/js/tpf.js"; 
@@ -117,19 +115,19 @@ new The_Project_Settings;
 new ACF();
 
 // SMTP
-if($tpf->settings('smtp_enable')) {
+if(the_project('smtp_enable')) {
   include_once("addons/smtp.php");
   new SMTP();
 }
 
 // ACF Based Forms
-if($tpf->settings('forms')) {
+if(the_project('forms')) {
   include_once("addons/acf-forms.php");
   new ACF_Forms(true);
 }
 
 // Translations
-if($tpf->settings('translations')) {
+if(the_project('translations')) {
   new Submenu([
     "title" => "Translate",
     "slug" => "project-translate",
@@ -138,14 +136,14 @@ if($tpf->settings('translations')) {
 }
 
 // WooCommerce
-if($tpf->settings('woo')) {
+if(the_project('woo')) {
 
   include_once("addons/woo.php");
   include_once("addons/discounts.php");
 
   new Woo;
 
-  if($tpf->settings('discounts')) {
+  if(the_project('discounts')) {
     new Discounts;
   }
 

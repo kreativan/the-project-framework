@@ -4,9 +4,7 @@ class WOO {
 
   public function __construct() {
 
-    $this->tpf = new \TPF();
-
-    if(!$this->tpf->settings("woo_styles")) {
+    if(!tpf_settings("woo_styles")) {
       add_theme_support('woocommerce');
     }
 

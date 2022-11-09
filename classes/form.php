@@ -11,11 +11,11 @@ class Form {
   public $button_style;
   public $button_text;
   public $labels;
+  public $grid_size;
 
 
   public function __construct() {
 
-    $this->tpf = new \TPF();
     $this->class = "uk-form-stacked";
     $this->method = "POST";
     $this->action = "./";
@@ -25,6 +25,7 @@ class Form {
     $this->button_style = "primary";
     $this->button_text = "Submit";
     $this->labels = true;
+    $this->grid_size = "default";
 
   }
 
@@ -78,8 +79,13 @@ class Form {
     return $this;
   }
 
-   public function labels($labels) {
+  public function labels($labels) {
     $this->labels = $labels;
+    return $this;
+  }
+
+  public function grid_size($grid_size) {
+    $this->grid_size = $grid_size;
     return $this;
   }
 
@@ -91,9 +97,10 @@ class Form {
 
     $class = "tpf-form";
     $class = !empty($this->class) ? " $this->class" : "";
+    $margin_bottom = $this->grid_size == "default" ? "uk-margin-bottom" : "uk-margin-{$this->grid_size}-bottom";
     
     $form = "<form id='{$this->id}' action='{$this->action}' method='{$this->method}' class='{$class}' enctype='$this->enctype'>";
-    $form .= "<div class='uk-grid' uk-grid>"; // grid start
+    $form .= "<div class='uk-grid uk-grid-{$this->grid_size}' uk-grid>"; // grid start
     foreach($this->fields as $field) {
 
       $grid = isset($field['grid']) ? $field['grid'] : '1-1';
@@ -105,7 +112,7 @@ class Form {
 
       } else {
 
-        $form .= "<div class='uk-width-{$grid}@m uk-margin-remove-top uk-margin-bottom'>";
+        $form .= "<div class='uk-width-{$grid}@m uk-margin-remove-top {$margin_bottom}'>";
 
         if($this->labels) $form .= $this->label($field);
     
@@ -147,7 +154,7 @@ class Form {
     $form .= "</div>"; // grid end
 
     if($this->numb_captcha) {
-      $form .= "<div class='uk-grid uk-grid-small uk-margin-remove-top' uk-grid>";
+      $form .= "<div class='uk-grid uk-grid-small' uk-grid>";
       $form .= "<div class='uk-width-auto@s'>" . $this->numb_captcha_markup() . "</div>";
       $form .= "<div class='uk-width-expand@s'>";
       if($this->ajax) {
@@ -159,9 +166,9 @@ class Form {
       $form .= "</div>";
     } else {
       if($this->ajax) {
-        $form .= "<div class='uk-margin'>{$this->submitButtonAjax()}</div>";
+        $form .= "<div class='uk-margin-top'>{$this->submitButtonAjax()}</div>";
       } else {
-        $form .= "<div class='uk-margin'>{$this->submitButton()}</div>";
+        $form .= "<div class='uk-margin-top'>{$this->submitButton()}</div>";
       }
     }
 
@@ -181,7 +188,7 @@ class Form {
       'name' =>  isset($field['name']) ? $field['name'] : "",
       'label' =>  isset($field['label']) ? $field['label'] : "",
       'value' => isset($field['value']) ? $field['value'] : "",
-      'req' => isset($field['req']) && $field['req'] == 1 ? 'required' : 0,
+      'req' => isset($field['req']) && $field['req'] == 1 ? 'required' : '',
       'class' => isset($field['class']) ? $field['class'] : "",
       'placeholder' => isset($field['placeholder']) ? $field['placeholder'] : "",
       'grid' => isset($field['grid']) ? $field['grid'] : "1-1",
@@ -218,7 +225,7 @@ class Form {
     $f = $this->field_data($field);
     $class = $f['class'] ? $f['class'] : 'uk-textarea';
     $rows =  isset($field['rows']) ? $field['rows'] : 5;
-    return "<textarea class='$class ' placeholder='{$f['placeholder']}' rows='$rows' {$f['attr']}>{$f['value']}</textarea>";
+    return "<textarea class='$class' name='{$f['name']}' placeholder='{$f['placeholder']}' rows='$rows' {$f['attr']}>{$f['value']}</textarea>";
   }
 
   public function select($field) {
@@ -300,11 +307,11 @@ class Form {
     $out .= "
       <input type='hidden' name='q1' value='$q1' />
       <input type='hidden' name='q2' value='$q2' />
-      <span class='uk-h4 uk-margin-remove uk-text-muted'>$q1 + $q2 ?</span>
+      <span class='uk-h4 uk-margin-remove uk-text-muted uk-text-right' style='min-width:80px;'>$q1 + $q2 ?</span>
     ";
     $out .= "
       <div class='uk-width-expand@m'>
-        <input class='uk-input uk-form-width-small uk-margin-small-left' type='text' name='answ' required />
+        <input class='uk-input uk-form-width-small uk-margin-small-left' type='text' name='answ' required style='max-width:80px;' />
       </div>
     ";
     $out .= "</div>";

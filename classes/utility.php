@@ -87,12 +87,12 @@ class TPF_Utility {
   }
 
   /**
-  *  Add Percent to a number
-  *  sum = n + (( p / 100) * n )
-  *  @param int $number
-  *  @param int $percent
-  *  @return int
-  */
+   *  Add Percent to a number
+   *  sum = n + (( p / 100) * n )
+   *  @param int $number
+   *  @param int $percent
+   *  @return int
+   */
   public function add_percent($number, $percent) {
     $sum = $number + (($percent/100) * $number);
     return $sum;

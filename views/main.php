@@ -1,7 +1,3 @@
-<?php
-$tpf = new TPF();
-?>
-
 <h1>
   <i class="dashicons-before <?= the_project('icon') ?>"></i>
   <?= the_project("name") ?>
@@ -18,9 +14,9 @@ $tpf = new TPF();
 
     <div class="left">
       <?php 
-        $tpf->render("views/_project.php");
+        tpf_render("views/_project.php");
         if(the_project('user_groups')) {
-          $tpf->render("views/_user-groups.php");
+          tpf_render("views/_user-groups.php");
         }
       ?>
       <?php
@@ -30,7 +26,7 @@ $tpf = new TPF();
     </div>
 
     <div class="right">
-     <?php $tpf->render("views/_menu.php") ?>
+     <?php tpf_render("views/_menu.php") ?>
       <?php
         do_action('tpf_dashboard_grid_right');
       ?>

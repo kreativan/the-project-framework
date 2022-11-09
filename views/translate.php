@@ -53,7 +53,7 @@ if($_POST && $_POST['submit_translation']) {
     <?php foreach(lng_def() as $key => $value) : ?>
       <?php if($key != "lang" && $key != "submit_translation") : ?>
         <div class="<?= $i++ > 0 ? "p-margin-sm" : "" ?>">
-          <label style="display: block;margin-bottom: 5px;"><?= lng_def($key) ?></label>
+          <label style="display: block;margin-bottom: 5px;font-weight: bold;"><?= lng_def($key) ?></label>
           <input style="width: 90%" type="text" name="<?= $key ?>" value="<?= lng_current($key, $this_language) ?>" />
         </div>
       <?php endif;?>

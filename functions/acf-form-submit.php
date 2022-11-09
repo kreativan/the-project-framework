@@ -17,6 +17,7 @@ function acf_form_submit() {
   $response = [
     "status" => "none", // used also for notification color
     "reset_form" => false, // clear-reset form input values
+    "notification_pos" => "top-right",
     // "notification" => "Notification: Ajax form submit was ok!", // if no modal, notification will be used
     // "modal" => "<h3>Modal Response</h3><p>Ajax form submit was successful</p>", // modal has priority
     //"redirect" => "/", // if used with modal, will redirect after modal confirm... 
@@ -34,7 +35,7 @@ function acf_form_submit() {
 
     if( !wp_verify_nonce($_POST['nonce'], "acf-ajax-nonce") ) exit();
 
-    $form_id = sanitize_text_field($_POST['form_id']);
+    $form_id = (int) sanitize_text_field($_POST['form_id']);
     $form_fields = get_field('form_fields', $form_id);
     $files_count = count($_FILES);
 
@@ -58,9 +59,11 @@ function acf_form_submit() {
     if(!$captcha) $req_array[] = 'answ';
 
     foreach($form_fields as $f) {
-      $labels_array[$f['name']] = $f['label'];
-      if($f['required'] && $f['acf_fc_layout'] != 'file') $req_array[] = $f['name'];
-      if($f['acf_fc_layout'] == 'email') $email_array[] = $f['name'];
+      $f_name = $f['name'];
+      if(empty($f_name)) $f_name = sanitize_key($f['label']);
+      $labels_array[$f_name] = $f['label'];
+      if($f['required'] && $f['acf_fc_layout'] != 'file') $req_array[] = $f_name;
+      if($f['acf_fc_layout'] == 'email') $email_array[] = $f_name;
       if($f['acf_fc_layout'] == 'file') $files_array[] = $f;
     }
 
@@ -69,7 +72,9 @@ function acf_form_submit() {
     if($is_files) {
       $req_files = [];
       foreach($files_array as $f) {
-        $key = $f['name'];
+        $f_name = $f['name'];
+        if(empty($f_name)) $f_name = sanitize_key($f['label']);
+        $key = $f_name;
         $value = $f['label'];
         if($f['required']) $req_files[$key] = $value;
       }
@@ -94,6 +99,7 @@ function acf_form_submit() {
       // get errors from valitron and store them in errors array
       $errors = [];
       $errors_fields = [];
+      if(!$captcha) $errors[] = 'Captcha error';
       foreach($v->errors() as $key => $value) {
         if($key != "answ") $errors[] = $value[0]; 
         $errors_fields[] = $key;
@@ -126,11 +132,13 @@ function acf_form_submit() {
     // We will store files and fields values here
     $post_files = [];
     $post_fields = [];
-
+  
     // create post or no?
     $create_post = get_field('create_post', $form_id);
-    $post_type_name = get_field('post_type_name', $form_id);
-    if(empty($post_type_name) && !post_type_exists($post_type_name)) $create_post = false;
+    if($create_post) {
+      $post_type_name = get_field('select_post_type', $form_id);
+      if(empty($post_type_name) && !post_type_exists($post_type_name)) $create_post = false;
+    }
 
     //  Upload Files - $post_files
     // ===========================================================
@@ -143,6 +151,7 @@ function acf_form_submit() {
       // Let WordPress handle the upload.
       foreach($files_array as $file) {
         $name = $file['name'];
+        if(empty($name)) $name = sanitize_key($f['label']);
         $post_files[$name] = media_handle_upload($name, 0);
       }
     }
@@ -154,6 +163,7 @@ function acf_form_submit() {
     foreach($form_fields as $f) {
       if($f['acf_fc_layout'] != 'file') {
         $name = $f['name'];
+        if(empty($name)) $name = sanitize_key($f['label']);
         $value = $_POST[$name];
         if(!empty($value)) {
           $post_fields[$name] = sanitize_text_field($value);
@@ -165,12 +175,13 @@ function acf_form_submit() {
     // ===========================================================
 
     $allow_post = $create_post ? true : false;
-    $allow_duplicated_posts = get_field('allow_duplicated_posts', $form_id);
-    $field_name_to_validate = get_field('field_name_to_validate', $form_id);
 
     // handle duplicated posts
-    if($create_post && !$allow_duplicated_posts) {
+    if($create_post) {
 
+      $allow_duplicated_posts = get_field('allow_duplicated_posts', $form_id);
+      $field_name_to_validate = get_field('field_name_to_validate', $form_id);
+  
       $post = get_posts([
         'numberposts'	=> 1,
         'post_type'		=> $post_type_name,
@@ -178,12 +189,13 @@ function acf_form_submit() {
         'meta_value'	=> $_POST[$field_name_to_validate],
       ]);
 
-      if($post) {
+      if($post && !$allow_duplicated_posts) {
 
         $allow_post = false;
 
         $duplicate_message = get_field('duplicate_message', $form_id);
-        $duplicate_msg = tpf_str_replace($duplicate_message, $_POST);
+        
+        $duplicate_msg = $util->str_replace($duplicate_message, $_POST);
         
         $response["status"] = "warning";
         $response['modal'] =  $duplicate_msg;
@@ -201,7 +213,7 @@ function acf_form_submit() {
     if($create_post && $allow_post) {
 
       $post_title = get_field('new_post_title', $form_id);
-      $post_title = tpf_str_replace($post_title, $_POST);
+      $post_title = $util->str_replace($post_title, $_POST);
       $post_title = !empty($post_title) ? $post_title : $post_type_name;
 
       $meta_input = [];
@@ -242,7 +254,7 @@ function acf_form_submit() {
 
       // Subject
       $subject = get_field('subject', $form_id);
-      $subject = tpf_str_replace($subject, $_POST);
+      $subject = $util->str_replace($subject, $_POST);
       $subject = !empty($subject) ? $subject : "Website form submition";
 
       // reply to
@@ -250,6 +262,7 @@ function acf_form_submit() {
       foreach($form_fields as $f) {
         if($f['acf_fc_layout'] == 'email') {
           $name = $f['name'];
+          if(empty($name)) $name = sanitize_key($f['label']);
           if(!empty($_POST[$name])) $reply_to = sanitize_text_field($_POST[$name]);
           break;
         }
@@ -265,7 +278,11 @@ function acf_form_submit() {
 
       // Message
       $message = "";
-      $exclude_vars = ['nonce', 'form_id'];
+      $exclude_vars = [
+        'nonce', 
+        'form_id',
+        'the_project_acf_form',
+      ];
       foreach($_POST as $key => $value) {
         if(!in_array($key, $exclude_vars) && !empty($value)) {
           $message .= "<p><strong>{$key}</strong><br />{$value}</p>";
@@ -297,9 +314,9 @@ function acf_form_submit() {
     //  Response
     // ===========================================================
     $title = get_field('success_title', $form_id);
-    $title = tpf_str_replace($title, $_POST);
+    $title = $util->str_replace($title, $_POST);
     $text = get_field('success_message', $form_id);
-    $text = tpf_str_replace($text, $_POST);
+    $text = $util->str_replace($text, $_POST);
     $response_text = !empty($title) ? "<h3>$title</h3>" : '';
     $response_text .= !empty($text) ? "<p>$text</p>" : '';
     $response["modal"] =  $response_text;
