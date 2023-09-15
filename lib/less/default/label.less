@@ -1,0 +1,38 @@
+@label-padding-vertical: 0;
+@label-padding-horizontal: @global-small-margin;
+@label-background: tint(@global-primary-background, 80%);
+@label-line-height: @global-line-height;
+@label-font-size: @global-small-font-size;
+@label-color: darken(@global-primary-background, 25%);
+
+@label-success-background: tint(@global-success-background, 70%);
+@label-success-color: darken(@global-success-background, 25%);
+
+@label-warning-background: tint(@global-warning-background, 70%);
+@label-warning-color: darken(@global-warning-background, 25%);
+
+@label-danger-background: tint(@global-danger-background, 70%);
+@label-danger-color: darken(@global-danger-background, 25%);
+
+@label-border-radius: 2px;
+@label-text-transform: none;
+
+/* ========================================================================
+  Component: Label
+========================================================================== */
+
+.hook-label-misc();
+
+.hook-label() {
+  border-radius: @label-border-radius;
+  text-transform: @label-text-transform;
+  border: 1px solid fade(@global-primary-background, 20%);
+}
+
+.hook-label-success() {}
+
+.hook-label-warning() {}
+
+.hook-label-danger() {}
+
+.hook-label-misc() {}

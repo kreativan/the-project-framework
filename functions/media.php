@@ -8,32 +8,56 @@
 
 function tpf_image($image, $options = []) {
 
-  if(empty($image) || $image == "") return false;
+  if (empty($image) || $image == "") return false;
 
+  // options
   $size = isset($options['size']) ? $options['size'] : 'large';
   $class = isset($options['class']) ? $options['class'] : "";
   $eager = isset($options['eager']) && $options['eager'] == 1 ? true : false;
 
-  $svg_width = isset($options['width']) ? $options['width'] : '';
-  $svg_height = isset($options['height']) ? $options['height'] : '';
+  $cls = "";
+  $uk_img = "uk-img";
 
   $src = $image['sizes'][$size];
   $width = $image['sizes']["{$size}-width"];
   $height = $image['sizes']["{$size}-height"];
   $alt = $image['alt'] != '' ? $image['alt'] : $image['title'];
 
-  $cls = "";
-  $uk_img = "uk-img";
+  if ($eager) $uk_img = 'uk-img="loading: eager"';
+  if ($class != "") $cls = "class='$class'";
 
-  if($eager) $uk_img = 'uk-img="loading: eager"';
-  if($class != "") $cls = "class='$class'";
+  echo "<img {$cls} data-src='{$src}' width='$width' height='$height' alt='{$alt}' {$uk_img} />";
+}
 
-  if($image['subtype'] == "svg+xml") {
-    echo "<img {$cls} data-src='{$src}' width='$svg_width' height='$svg_height' alt='{$alt}' uk-svg />";
-  } else {
-    echo "<img {$cls} data-src='{$src}' width='$width' height='$height' alt='{$alt}' {$uk_img} />"; 
-  }
 
+/**
+ * Image SVG uk-svg
+ * @param object $image 
+ * @param array $options
+ */
+
+function tpf_image_svg($image, $options = []) {
+
+  if (empty($image) || $image == "") return false;
+
+  $type = isset($options['type']) ? $options['type'] : 'stroke';
+  $color = isset($options['color']) ? $options['color'] : 'currentColor';
+  $stroke_width = isset($options['stroke_width']) ? $options['stroke_width'] : 1.5;
+  $size = isset($options['size']) ? $options['size'] : 60;
+
+  $class = "svg-image";
+  $style = "";
+
+  $class .= " svg-$type";
+  $style = $type == 'stroke' ? "stroke: $color;" : "fill: $color;";
+  $style .= "stroke-width: $stroke_width;";
+
+  if ($style != "") $style = "style='$style'";
+
+  $src = is_object($image) ? $image['url'] : $image;
+  $alt = is_object($image) && $image['alt'] != '' ? $image['alt'] : '';
+
+  echo "<img class='{$class}' data-src='{$src}' width='$size' height='$size' alt='{$alt}' uk-svg $style />";
 }
 
 /**
@@ -42,7 +66,7 @@ function tpf_image($image, $options = []) {
  */
 
 function tpf_svg_uri() {
-  if(the_project("svg_folder")) {
+  if (the_project("svg_folder")) {
     return get_template_directory_uri() . the_project('svg_folder');
   } else {
     return get_template_directory_uri() . "/assets/svg/";
@@ -50,13 +74,12 @@ function tpf_svg_uri() {
 }
 
 function tpf_svg_dir() {
-  if(the_project("svg_folder")) {
+  if (the_project("svg_folder")) {
     return get_template_directory() . the_project('svg_folder');
   } else {
     return get_template_directory() . "/assets/svg/";
   }
 }
-
 
 /**
  *  Render SVG
@@ -65,40 +88,26 @@ function tpf_svg_dir() {
  *  @return markup
  */
 function tpf_svg($svg_file, $options = []) {
-  $svg_file = get_template_directory() . "{$svg_file}.svg";
-  if(!file_exists($svg_file)) return false;
+
+  $folder = isset($options['folder']) ? $options['folder'] : tpf_svg_dir();
+  $svg_file = str_replace('.svg', '', $svg_file);
+  $svg_file = $folder . $svg_file . ".svg";
+  if (!file_exists($svg_file)) return false;
 
   // Options
   $type = !empty($options["type"]) ? $options["type"] : "stroke"; // stroke / fill
-  $color = !empty($options["color"]) ? $options["color"] : ""; // hex
-  $size = !empty($options["size"]) ? $options["size"] : "28px"; // px
+  $color = !empty($options["color"]) ? $options["color"] : "currentcolor"; // hex
+  $size = !empty($options["size"]) ? $options["size"] : "1em"; // px
   $class = "svg-$type";
   $class .= !empty($options["class"]) ? " " . $options["class"] : "";
   $sty = !empty($options["style"]) ? $options["style"] : ""; // style=""
 
-  $style = "width:$size;height:$size;";
-  if($color != "") {
+  $style = "width:$size;height:$size;line-height:0.5;";
+  if ($color != "") {
     $style .= ($type == "stroke") ? "stroke: $color;" : "fill: $color;";
   }
   $style .= !empty($sty) ? " $sty" : "";
 
   $svg = file_get_contents($svg_file);
-  echo "<span class='svg {$class}' style='{$style}'>{$svg}</span>";
-}
-
-
-/**
- *  Get Youtube embed url from regular url
- *  @param $url - regular youtube url
- */
-function tpf_youtube($url) {
-  $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_-]+)\??/i';
-  $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))([a-zA-Z0-9_-]+)/i';
-  if (preg_match($longUrlRegex, $url, $matches)) {
-    $youtube_id = $matches[count($matches) - 1];
-  }
-  if (preg_match($shortUrlRegex, $url, $matches)) {
-    $youtube_id = $matches[count($matches) - 1];
-  }
-  return 'https://www.youtube.com/embed/' . $youtube_id ;
+  return "<span class='svg {$class}' style='{$style}'>{$svg}</span>";
 }

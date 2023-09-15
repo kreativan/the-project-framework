@@ -1,0 +1,30 @@
+@navbar-background: transparent;
+@navbar-nav-item-height: 80px;
+
+@navbar-dropdown-background: white;
+@navbar-dropdown-margin: 10px;
+
+@tm-navbar-dropdown-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+/* =========================================================== 
+  Navbar
+=========================================================== */
+
+.hook-navbar-container() {
+  height: @navbar-nav-item-height;
+}
+
+.hook-navbar() {
+
+  .current-product_cat-ancestor>a,
+  .current-menu-item>a {
+    color: @navbar-nav-item-active-color;
+  }
+
+}
+
+.hook-navbar-dropdown() {
+
+  box-shadow: @tm-navbar-dropdown-box-shadow;
+
+}

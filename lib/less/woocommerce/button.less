@@ -1,0 +1,37 @@
+@woo-button-bg: @button-default-background;
+@woo-button-color: @button-default-color;
+@woo-button-hover-bg: @global-muted-background;
+@woo-button-hover-color: @button-default-hover-color;
+
+// ========================================================= 
+// Woo: buton.less 
+// ========================================================= 
+
+.woocommerce {
+
+  .button {
+    .uk-button() !important;
+    .uk-button-default() !important;
+
+    background: @woo-button-bg !important;
+    color: @woo-button-color !important;
+
+    &:active,
+    &:hover {
+      background: @woo-button-hover-bg !important;
+      color: @woo-button-hover-color !important;
+    }
+
+    &.alt {
+      .uk-button-primary() !important;
+
+      &:focus,
+      &:active,
+      &:hover {
+        background: @button-primary-hover-background !important;
+        color: @button-primary-hover-color !important;
+      }
+    }
+  }
+
+}

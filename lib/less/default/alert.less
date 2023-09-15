@@ -1,0 +1,29 @@
+@alert-margin-vertical: @global-margin;
+@alert-padding: 15px;
+@alert-padding-right: @alert-padding + 14px;
+@alert-background: @global-muted-background;
+@alert-color: @global-color;
+
+@alert-close-top: @alert-padding + 5px;
+@alert-close-right: @alert-padding;
+
+@alert-primary-background: lighten(tint(@global-primary-background, 40%), 20%);
+@alert-primary-color: darken(@global-primary-background, 15%);
+
+@alert-success-background: lighten(tint(@global-success-background, 35%), 23%);
+@alert-success-color: darken(@global-success-background, 10%);
+
+@alert-warning-background: lighten(tint(@global-warning-background, 38%), 15%);
+@alert-warning-color: darken(@global-warning-background, 10%);
+
+@alert-danger-background: lighten(tint(@global-danger-background, 30%), 20%);
+@alert-danger-color: darken(@global-danger-background, 10%);
+
+
+/* ========================================================================
+  Component: Alert
+========================================================================== */
+
+.hook-alert-close() {
+  opacity: 0.7;
+}

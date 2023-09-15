@@ -1,0 +1,75 @@
+@star-rating-size: 1.5rem;
+@star-rating-color: #bfbfbf;
+@star-rating-active-color: gold;
+// ========================================================= 
+// Star Rating 
+// ========================================================= 
+
+.star-rating {
+
+  display: inline-block;
+  position: relative;
+  height: @star-rating-size;
+  line-height: @star-rating-size;
+  font-size: @star-rating-size;
+
+  label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  label:last-child {
+    position: static;
+  }
+
+  label:nth-child(1) {
+    z-index: 5;
+  }
+
+  label:nth-child(2) {
+    z-index: 4;
+  }
+
+  label:nth-child(3) {
+    z-index: 3;
+  }
+
+  label:nth-child(4) {
+    z-index: 2;
+  }
+
+  label:nth-child(5) {
+    z-index: 1;
+  }
+
+  label input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+  }
+
+  label .icon {
+    float: left;
+    color: transparent;
+    font-size: @star-rating-size;
+  }
+
+  label:last-child .icon {
+    color: @star-rating-color;
+  }
+
+  label input:focus:not(:checked)~.icon:last-child {
+    color: @star-rating-color;
+    text-shadow: 0 0 3px @star-rating-active-color;
+  }
+
+  &:not(:hover) label input:checked~.icon,
+  &:hover label:hover input~.icon {
+    color: @star-rating-active-color;
+  }
+
+}

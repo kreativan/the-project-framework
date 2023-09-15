@@ -1,0 +1,58 @@
+@notification-position: 20px;
+@notification-z-index: @global-z-index + 40;
+@notification-width: 350px;
+
+@notification-message-margin-top: 10px;
+@notification-message-padding: @global-small-gutter;
+@notification-message-background: tint(@global-primary-background, 80%);
+@notification-message-color: darken(@global-primary-background, 25%);
+@notification-message-font-size: 1rem;
+@notification-message-line-height: 1.4;
+
+@notification-close-top: @notification-message-padding + 5px;
+@notification-close-right: @notification-message-padding;
+
+@notification-message-primary-color: darken(@global-primary-background, 25%);
+@notification-message-success-color: darken(@global-success-background, 25%);
+@notification-message-warning-color: darken(@global-warning-background, 25%);
+@notification-message-danger-color: darken(@global-danger-background, 25%);
+
+@tm-notification-box-shadow: 0 3px 20px rgba(0, 0, 0, 0.1);
+
+@tm-notification-primary-bg: tint(@global-primary-background, 80%);
+@tm-notification-success-bg: tint(@global-success-background, 80%);
+@tm-notification-warning-bg: tint(@global-warning-background, 80%);
+@tm-notification-danger-bg: tint(@global-danger-background, 80%);
+
+/* =========================================================== 
+  Notification
+=========================================================== */
+
+.hook-notification() {}
+
+.hook-notification-message() {
+  background-color: @tm-notification-primary-bg;
+  box-shadow: @tm-notification-box-shadow;
+}
+
+.hook-notification-close() {
+  color: inherit;
+}
+
+.hook-notification-message-primary() {
+  background-color: @tm-notification-primary-bg;
+}
+
+.hook-notification-message-success() {
+  background-color: @tm-notification-success-bg;
+}
+
+.hook-notification-message-warning() {
+  background-color: @tm-notification-warning-bg;
+}
+
+.hook-notification-message-danger() {
+  background-color: @tm-notification-danger-bg;
+}
+
+.hook-notification-misc() {}

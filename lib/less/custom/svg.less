@@ -1,0 +1,59 @@
+@svg-stroke-width: 1.4;
+
+/* =========================================================== 
+  SVG
+=========================================================== */
+
+.uk-icon * {
+  stroke-width: @svg-stroke-width !important;
+}
+
+.uk-spinner * {
+  stroke-width: 2 !important;
+}
+
+.svg-stroke * {
+  fill: none !important;
+}
+
+.svg {
+
+  display: inline-block;
+  position: relative;
+
+  svg {
+    height: 100%;
+  }
+
+  &.svg-stroke {
+    svg {
+      stroke: inherit !important;
+      stroke-width: @svg-stroke-width !important;
+    }
+
+    .hook-svg-stroke();
+  }
+
+  &.svg-fill {
+    svg * {
+      fill: inherit !important;
+    }
+
+    .hook-svg-fill();
+  }
+
+  .hook-svg();
+
+}
+
+// Hooks
+// ========================================================================
+.hook-svg-root();
+
+.hook-svg-root() {}
+
+.hook-svg() {}
+
+.hook-svg-stroke() {}
+
+.hook-svg-fill() {}

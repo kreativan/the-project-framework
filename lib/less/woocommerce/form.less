@@ -1,0 +1,53 @@
+@woo-fieldset-background: @global-muted-background;
+@woo-fieldset-border: @global-border;
+
+// ========================================================= 
+// woo: forms.less 
+// ========================================================= 
+
+input.qty {
+  width: 100px !important;
+}
+
+.select2 {
+
+  border: 1px solid @global-border;
+
+  &.select2-container .select2-selection--single {
+    .uk-select();
+    line-height: @global-control-height;
+    height: @global-control-height;
+  }
+
+  &.select2-container--default .select2-selection--single .select2-selection__arrow,
+  &.select2-container--default .select2-selection--single .select2-selection__rendered {
+    height: @global-control-height;
+    line-height: @global-control-height;
+  }
+
+}
+
+.select2-dropdown {
+  border: 1px solid @global-border !important;
+  box-shadow: @global-medium-box-shadow;
+}
+
+.woocommerce-form-row {
+
+  em {
+    font-size: @global-small-font-size;
+    color: @global-emphasis-color;
+  }
+
+}
+
+fieldset {
+  background: @woo-fieldset-background;
+  border: 1px solid @woo-fieldset-border;
+
+  legend {
+    background: @global-background;
+    color: @global-emphasis-color;
+    padding: 2px 5px;
+  }
+}

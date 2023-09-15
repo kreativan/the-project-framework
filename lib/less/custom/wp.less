@@ -1,0 +1,103 @@
+@wp-pagination-align: left;
+@wp-pagination-item-h: 10px;
+@wp-pagination-item-v: 5px;
+
+@wp-danger-border: @global-danger-background;
+@wp-form-border: @form-border;
+
+// --------------------------------------------------------- 
+// wp 
+// --------------------------------------------------------- 
+
+#wpadminbar + #htmx-page-indicator {
+  top: 32px;
+}
+
+
+/* =========================================================== 
+  Table
+=========================================================== */
+
+table:not(.uk-table) {
+
+  .uk-table();
+
+  tr {
+    // border: 1px solid @global-border;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    text-align: left;
+  }
+
+}
+
+/* =========================================================== 
+  Form
+=========================================================== */
+
+label:not(.uk-form-label):not(.uk-label) {
+  .uk-form-label();
+}
+
+input:not(.uk-input):not([type=checkbox]):not([type=radio]):not([type=submit]) {
+  .uk-input();
+}
+
+select:not(.uk-select) {
+  border: 1px solid @wp-form-border !important;
+  .uk-select();
+}
+
+textarea:not(.uk-textarea) {
+  .uk-textarea();
+}
+
+input[type=submit]:not(.uk-button) {
+
+  .uk-button();
+  .uk-button-default();
+
+  &:active,
+  &:focus,
+  &:hover {
+    cursor: pointer;
+    background-color: @button-default-hover-background;
+    color: @button-default-hover-color;
+  }
+
+}
+
+.hook-form-single-line() {
+  &.error {
+    border-color: @wp-danger-border;
+  }
+}
+
+.hook-form-multi-line() {
+  &.error {
+    border-color: @wp-danger-border;
+  }
+}
+
+/* =========================================================== 
+  Pagination
+=========================================================== */
+
+ul.page-numbers {
+  .uk-pagination();
+  padding: 0;
+  display: flex;
+  justify-content: @wp-pagination-align;
+  align-items: center;
+
+  li > a {
+    padding: @wp-pagination-item-v @wp-pagination-item-h;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+}

@@ -1,6 +1,6 @@
 <?php
 /**
- * Multilanguage strings
+ * Multitranslatoruage strings
  * @param string $str
  * if specified $str does not exists it will be added to translation file
  * using lng_update() function
@@ -10,10 +10,10 @@ function lng($str = "") {
 
   $key = lng_key($str);
 
-  $lang = get_option('WPLANG');
-  $lang = explode("_", $lang);
-  $lang = $lang[0];
-  $lang = !empty($lang) ? $lang : 'en';
+  $translator = get_option('WPtranslator');
+  $translator = explode("_", $translator);
+  $translator = $translator[0];
+  $translator = !empty($translator) ? $translator : 'en';
 
   $default_file = get_template_directory() . "/assets/language/default.json";
   $default_json = file_get_contents($default_file);
@@ -21,7 +21,7 @@ function lng($str = "") {
 
   if(!isset($default[$key])) lng_update($str);
 
-  $translation_file = get_template_directory() . "/assets/language/$lang.json";
+  $translation_file = get_template_directory() . "/assets/language/$translator.json";
   if(file_exists($translation_file)) {
     $translation_json = file_get_contents($translation_file);
     $translation = json_decode($translation_json, true);
@@ -57,4 +57,20 @@ function lng_key($str) {
   $key = str_replace('"', "", $key);
   $key = str_replace("%s", "__s__", $key);
   return $key;
+}
+
+/**
+ * language function
+ */
+function __x($string, $locale = "") {
+  $locale = $locale != "" ? $locale : get_locale();
+  $dir = WP_CONTENT_DIR . "/translator/";
+  $default_file = "{$dir}translator.json";
+  $locale_file = "{$dir}translator-$locale.json";
+  if (!file_exists($default_file) && !file_exists($locale_file)) return $string;
+  $json_file = file_exists($locale_file) ? $locale_file : $default_file;
+  $json = file_get_contents($json_file);
+  $array = json_decode($json, true);
+  $key = sanitize_key($string);
+  return isset($array[$key]) ? $array[$key] : $string;
 }

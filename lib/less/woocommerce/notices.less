@@ -1,0 +1,102 @@
+@woo-notice-border-radius: 3px;
+
+@woo-notice-info-bg: tint(@global-primary-background, 90%);
+@woo-notice-info-border: fade(@global-primary-background, 20%);
+@woo-notice-info-border-top: fade(@global-primary-background, 70%);
+@woo-notice-info-color: darken(@global-primary-background, 20%);
+@woo-notice-info-icon-color: darken(@global-primary-background, 10%);
+
+@woo-notice-message-bg: tint(@global-success-background, 90%);
+@woo-notice-message-border: fade(@global-success-background, 20%);
+@woo-notice-message-border-top: fade(@global-success-background, 70%);
+@woo-notice-message-color: darken(@global-success-background, 20%);
+@woo-notice-message-icon-color: darken(@global-success-background, 10%);
+
+@woo-notice-error-bg: tint(@global-danger-background, 90%);
+@woo-notice-error-border: fade(@global-danger-background, 20%);
+@woo-notice-error-border-top: fade(@global-danger-background, 80%);
+@woo-notice-error-color: darken(@global-danger-background, 20%);
+@woo-notice-error-icon-color: darken(@global-danger-background, 10%);
+
+@woo-notice-button-text-transform: none;
+@woo-notice-button-font-size: 0.9rem;
+@woo-notice-button-line-height: 34px;
+
+
+// ========================================================= 
+// woo: notices.less
+// ========================================================= 
+
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
+
+  border-radius: @woo-notice-border-radius !important;
+
+  .button {
+    border: none !important;
+    background: fade(white, 80%) !important;
+    text-transform: @woo-notice-button-text-transform !important;
+    font-size: @woo-notice-button-font-size !important;
+    line-height: @woo-notice-button-line-height !important;
+    padding: 0 15px !important;
+
+    &:hover {
+      background: fade(white, 90%) !important;
+    }
+  }
+
+}
+
+.woocommerce-message {
+
+  background: @woo-notice-message-bg !important;
+  color: @woo-notice-message-color !important;
+  border: 1px solid @woo-notice-message-border !important;
+  border-top: 3px solid @woo-notice-message-border-top !important;
+
+  a,
+  &:before {
+    color: @woo-notice-message-icon-color !important;
+  }
+
+  .button {
+    color: @woo-notice-message-color !important;
+  }
+
+}
+
+.woocommerce-info {
+
+  background: @woo-notice-info-bg !important;
+  color: @woo-notice-info-color !important;
+  border: 1px solid @woo-notice-info-border !important;
+  border-top: 3px solid @woo-notice-info-border-top !important;
+
+  a,
+  &:before {
+    color: @woo-notice-info-icon-color !important;
+  }
+
+  .button {
+    color: @woo-notice-info-color !important;
+  }
+}
+
+.woocommerce-error {
+
+  background: @woo-notice-error-bg !important;
+  color: @woo-notice-error-color !important;
+  border: 1px solid @woo-notice-error-border !important;
+  border-top: 3px solid @woo-notice-error-border-top !important;
+
+  a,
+  &:before {
+    color: @woo-notice-error-icon-color !important;
+  }
+
+  .button {
+    color: @woo-notice-error-color !important;
+  }
+
+}

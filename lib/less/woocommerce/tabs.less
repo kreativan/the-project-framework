@@ -1,0 +1,37 @@
+@woo-tabs-font-weight: normal;
+@woo-tabs-font-size: 1rem;
+@woo-tabs-padding: 10px 20px;
+
+// ========================================================= 
+// woo: tabs.less 
+// ========================================================= 
+
+.woocommerce-tabs {
+
+  .tabs {
+    padding: 0 !important;
+  }
+
+  .tabs li {
+    background: none !important;
+    margin: 0 !important;
+    padding: @woo-tabs-padding !important;
+
+    &:before,
+    &:after {
+      display: none !important;
+    }
+  }
+
+  .tabs li a {
+    padding: 0 !important;
+    font-size: @woo-tabs-font-size !important;
+    font-weight: @woo-tabs-font-weight !important;
+  }
+
+  .tabs li:not(.active) {
+    border: none !important;
+  }
+
+
+}

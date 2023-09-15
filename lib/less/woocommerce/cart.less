@@ -1,0 +1,126 @@
+@woo-cart-thumb-width: 60px;
+@woo-cart-qty-width: 100px;
+@woo-cart-total-color: @global-emphasis-color;
+@woo-cart-coupon-input-width: 200px;
+
+// ========================================================= 
+// woo: cart.less 
+// ========================================================= 
+
+.woocommerce .woocommerce-cart-form {
+
+  .product-remove {
+    width: 32px;
+  }
+
+  .product-thumbnail {
+    width: @woo-cart-thumb-width;
+  }
+
+  .product-name {
+    .variation {
+      margin-top: 0;
+      font-size: 14px;
+    }
+  }
+
+  .product-quantity {
+    input {
+      width: @woo-cart-qty-width !important;
+    }
+  }
+
+  .actions {
+
+    .coupon {
+
+      display: flex;
+      width: 50% !important;
+      float: left;
+
+      input {
+        width: @woo-cart-coupon-input-width !important;
+        margin-right: @global-margin !important;
+      }
+
+    }
+
+    .button {
+      background: white !important;
+      border: 1px solid @global-border !important;
+    }
+
+    @media(min-width: @breakpoint-medium) {
+
+      button[name="update_cart"] {
+        float: right;
+      }
+
+    }
+
+    @media(max-width: @breakpoint-medium) {
+
+      .coupon {
+        display: block;
+        width: 100% !important;
+        float: none;
+
+        input {
+          width: 100% !important;
+        }
+      }
+
+      button {
+        display: block !important;
+        float: none;
+        margin-top: 10px !important;
+        width: 100% !important;
+      }
+
+    }
+
+  }
+
+  @media(max-width: @breakpoint-medium) {
+
+    .product-thumbnail img {
+      height: 80px;
+      width: auto !important
+    }
+
+    thead {
+      display: none !important;
+    }
+
+    table td {
+      display: block !important;
+      width: 100% !important;
+      border: none !important;
+      box-sizing: border-box !important;
+      text-align: center !important;
+
+      &.product-subtotal {
+        font-weight: bold;
+      }
+    }
+
+    .product-remove {
+      position: relative;
+
+      .remove {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+      }
+    }
+
+  }
+}
+
+.woocommerce .cart-collaterals {
+
+  .order-total {
+    color: @woo-cart-total-color;
+  }
+
+}

@@ -1,0 +1,17 @@
+@woo-pagination-active-bg: @global-muted-background;
+@woo-pagination-active-color: @global-color;
+
+// ========================================================= 
+// Woo: Pagination 
+// ========================================================= 
+
+.woocommerce .woocommerce-pagination {
+
+  ul li a:focus,
+  ul li a:hover,
+  ul li span.current {
+    background: @woo-pagination-active-bg !important;
+    color: @woo-pagination-active-color !important;
+  }
+
+}

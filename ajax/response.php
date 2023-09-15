@@ -42,6 +42,10 @@ $response = [
     "value" => 1,
     "days" => 30,
   ],
+  "update_DOM" => [
+    "selector" => ".cart",
+    "html" => "1",
+  ],
   // Log $_POST data
   "post" => $_POST,
   // Log $_GET data

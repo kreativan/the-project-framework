@@ -1,7 +1,5 @@
 <?php
 
-$util = new TPF_Utility();
-
 //
 //  Default Reponse
 //
@@ -21,16 +19,16 @@ $response = [
 //  Process Form
 //
 
-if($_POST['test_form']) {
-  
-  if( !wp_verify_nonce($_POST['nonce'], "ajax-nonce") ) exit();
+if ($_POST['test_form']) {
+
+  if (!wp_verify_nonce($_POST['nonce'], "ajax-nonce")) exit();
 
   //-------------------------------------------------------- 
   //  Validate
   //-------------------------------------------------------- 
-  
-  $v = $util->valitorn($_POST);
-  $v->rule('required', ['name', 'email', 'message']); 
+
+  $v = tpf_valitron($_POST);
+  $v->rule('required', ['name', 'email', 'message']);
   $v->rule('email', 'email');
 
   $v->labels([
@@ -39,16 +37,17 @@ if($_POST['test_form']) {
     'message' => 'Message'
   ]);
 
-  if(!$v->validate()) {
+  if (!$v->validate()) {
 
     // get errors from valitron and store them in errors array
     $errors = [];
     $errors_fields = [];
-    foreach($v->errors() as $key => $value) {
-      $errors[] = $value[0]; 
+
+    foreach ($v->errors() as $key => $value) {
+      $errors[] = $value[0];
       $errors_fields[] = $key;
     }
-    
+
     $response["status"] = "error";
     $response["errors"] = $errors;
     $response["reset_form"] = false;
@@ -57,7 +56,6 @@ if($_POST['test_form']) {
     header('Content-type: application/json');
     echo json_encode($response);
     exit();
-
   }
 
   //-------------------------------------------------------- 
@@ -78,35 +76,30 @@ if($_POST['test_form']) {
 
   // Subject
   $subject = "Email from {$_POST['name']}";
-  
+
   // Message
   $message = "";
 
-  foreach($_POST as $key => $value) {
+  foreach ($_POST as $key => $value) {
     $message .= "<strong>{$key}</strong>: {$value}<br />";
   }
 
   try {
 
-    if( wp_mail($sent_to, $subject, $message, $headers) ) {
+    if (wp_mail($sent_to, $subject, $message, $headers)) {
 
       $response["status"] = "success";
       $response["modal"] = "<h3>Thank you!</h3><p>Your message has been sent. Thank you for your time!</p>";
-
     } else {
 
       $response["danger"] = "danger";
       $response["modal"] = "<h3 class='uk-text-danger'>Error</h3><p>There was an error, please try again</p>";
-
     }
-
   } catch (Exception $e) {
 
     $response["danger"] = "danger";
     $response["modal"] = "<h3 class='uk-text-danger'>Error!</h3><p>{$e->getMessage()}</p>";
-
   }
-
 }
 
 //-------------------------------------------------------- 

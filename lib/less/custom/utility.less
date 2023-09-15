@@ -1,0 +1,89 @@
+@tm-container-margin: 70px;
+@tm-container-margin-l: @global-medium-margin;
+
+@tm-bg-dark: #222;
+@tm-bg-white: white;
+
+@tm-font-mono: 'Courier New', Courier, monospace;
+
+//  Layout
+// ===========================================================
+
+.tm-container-margin {
+  margin-top: @tm-container-margin;
+  margin-bottom: @tm-container-margin;
+
+  @media(max-width: @breakpoint-large) {
+    margin-top: @tm-container-margin-l;
+    margin-bottom: @tm-container-margin-l;
+  }
+}
+
+//  Text
+// ===========================================================
+
+.tm-font {
+  font-family: @base-heading-font-family !important;
+}
+
+.tm-font-base {
+  font-family: @global-font-family !important;
+
+  &:not(.uk-text-uppercase) {
+    text-transform: none !important;
+  }
+}
+
+.tm-font-mono {
+  font-family: @tm-font-mono !important;
+}
+
+.tm-text-bg {
+  background: #ffeeb5;
+  color: @global-emphasis-color;
+  text-fill-color: @global-emphasis-color;
+  -webkit-text-fill-color: @global-emphasis-color;
+  -moz-text-fill-color: @global-emphasis-color;
+}
+
+.tm-text-line-1 {
+  line-height: 1;
+}
+
+//  Reset
+// ===========================================================
+
+.tm-reset-button {
+  .reset-button();
+  font-family: @global-font-family !important;
+}
+
+.tm-reset-list {
+  .reset-list();
+}
+
+//  Background
+// ===========================================================
+
+.tm-bg-white {
+  background: @tm-bg-white;
+}
+
+.tm-bg-dark {
+  background: @tm-bg-dark;
+}
+
+//  Border
+// ===========================================================
+
+.tm-border-none {
+  border: none !important;
+}
+
+.tm-border {
+  border: 1px solid @global-border;
+}
+
+.tm-border-primary {
+  border: 1px solid @global-primary-background;
+}

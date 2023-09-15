@@ -1,0 +1,78 @@
+@woo-product-single-gallery-image-margin: 10px;
+@woo-product-single-gallery-image-size: 23%;
+
+@woo-custom-field-desc-bg: @global-primary-background;
+@woo-custom-field-desc-color: white;
+
+// --------------------------------------------------------- 
+// Product Single 
+// --------------------------------------------------------- 
+
+.woocommerce-product-gallery {
+
+  .woocommerce-product-gallery__image:first-child {
+    margin-bottom: @woo-product-single-gallery-image-margin;
+  }
+
+  .woocommerce-product-gallery__image:not(:first-child) {
+    margin-right: @woo-product-single-gallery-image-margin;
+    width: @woo-product-single-gallery-image-size !important;
+  }
+
+}
+
+.variations_form {
+  select {
+    height: @global-control-height;
+    box-shadow: none !important;
+  }
+
+  .uk-heading-divider+select {
+    margin-top: -1px;
+  }
+}
+
+.woocommerce-variation-description {
+  font-size: @global-small-font-size;
+}
+
+.woocommerce-variation-price {
+  margin-bottom: @global-small-margin;
+}
+
+.woocommerce-grouped-product-list-item {
+  .woocommerce-grouped-product-list-item__quantity {
+    padding-left: 15px !important;
+  }
+}
+
+.woo-custom-field+.quantity+button,
+.woo-custom-field+.quantity {
+  margin-top: @global-margin !important;
+}
+
+.woo-custom-field {
+  position: relative;
+
+  .description {
+    display: block !important;
+    position: absolute !important;
+    top: 100%;
+    left: 0;
+    font-size: @global-small-font-size;
+    z-index: 99;
+    opacity: 0;
+    transition: opacity .3s;
+    background: @woo-custom-field-desc-bg !important;
+
+    &:before {
+      border-color: @woo-custom-field-desc-bg transparent transparent transparent !important;
+    }
+  }
+
+  //input:focus+.description,
+  &:hover .description {
+    visibility: visible;
+    opacity: 1;
+  }
+}

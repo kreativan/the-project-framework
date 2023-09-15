@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * layout/base/foot.php
+ */
+
+$google_analytics = get_field('google_analytics', 'options');
+
+?>
+
+<?php if ($google_analytics && $google_analytics != "") : ?>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<?= $google_analytics ?>"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', '<?= $google_analytics ?>');
+  </script>
+<?php endif; ?>
+
+<?php
+wp_footer();
+?>
+
+<?php if (the_project('htmx')) : ?>
+  <div id="htmx-page-indicator"></div>
+<?php endif; ?>

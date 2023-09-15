@@ -1,0 +1,52 @@
+@woo-checkout-payment-bg: @global-muted-background;
+@woo-checkout-payment-border: @global-border;
+@woo-checkout-total-color: @global-emphasis-color;
+@woo-checkout-button-height: 50px;
+
+@woo-checkout-panel-padding: @global-gutter;
+@woo-checkout-panel-bg: @global-muted-background;
+@woo-checkout-panel-border: @global-border;
+@woo-checkout-panel-margin: @global-margin;
+
+// ========================================================= 
+// woo: checkout.less 
+// ========================================================= 
+
+.woocommerce-checkout {
+
+  #payment {
+    background: @woo-checkout-payment-bg !important;
+    border: 1px solid @woo-checkout-payment-border !important;
+    border-radius: 0;
+
+    ul.payment_methods li {
+      line-height: 1.5 !important;
+    }
+  }
+
+  .order-total {
+    color: @woo-checkout-total-color;
+  }
+
+  button#place_order {
+    line-height: @woo-checkout-button-height !important;
+  }
+
+  .woocommerce-terms-and-conditions-wrapper {
+    margin-bottom: @global-margin;
+  }
+
+  .checkout_coupon,
+  .woocommerce-additional-fields,
+  .woocommerce-billing-fields__field-wrapper {
+    padding: @woo-checkout-panel-padding;
+    background: @woo-checkout-panel-bg;
+    border: 1px solid @woo-checkout-panel-border;
+    margin: @woo-checkout-panel-margin 0;
+
+    textarea {
+      min-height: 10em !important;
+    }
+  }
+
+}

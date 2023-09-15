@@ -1,0 +1,83 @@
+@woo-account-nav-pos: right;
+@woo-account-nav-width: 220px;
+@woo-account-min-height: 300px;
+
+@woo-account-gutter: @global-gutter;
+@woo-account-divider-color: @global-border;
+
+@woo-account-nav-color: @global-color;
+@woo-account-nav-hover-color: @global-emphasis-color;
+@woo-account-nav-active-color: @global-primary-background;
+
+// ========================================================= 
+// Woo: account.less 
+// ========================================================= 
+
+.woocommerce {
+
+
+  .woocommerce-MyAccount-navigation {
+
+    box-sizing: border-box;
+    width: @woo-account-nav-width;
+
+    & when(@woo-account-nav-pos=right) {
+      float: right;
+      padding-left: @woo-account-gutter;
+    }
+
+    & when(@woo-account-nav-pos=left) {
+      float: left;
+      padding-right: @woo-account-gutter;
+    }
+
+    ul {
+      .uk-nav() !important;
+      .uk-nav-default() !important;
+
+      &>li {
+        padding: 5px 0;
+      }
+
+      &>li>a {
+        color: @woo-account-nav-color;
+        text-decoration: none;
+      }
+
+      &>li:hover>a {
+        color: @woo-account-nav-hover-color;
+      }
+
+      &>li.is-active>a {
+        color: @woo-account-nav-active-color;
+      }
+    }
+
+  }
+
+  .woocommerce-MyAccount-content {
+
+    box-sizing: border-box;
+    width:~"calc(100% - @{woo-account-nav-width})";
+    min-height: @woo-account-min-height;
+
+    & when(@woo-account-nav-pos=right) {
+      float: left;
+      padding-right: @woo-account-gutter;
+      border-right: 1px solid @global-border;
+    }
+
+    & when(@woo-account-nav-pos=left) {
+      float: right;
+      padding-left: @woo-account-gutter;
+      border-left: 1px solid @global-border;
+    }
+
+  }
+
+  .woocommerce-privacy-policy-text {
+    font-size: @global-small-font-size;
+  }
+
+
+}
