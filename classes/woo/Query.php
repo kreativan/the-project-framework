@@ -2,94 +2,69 @@
 
 /**
  * Woo Query
- * You can use this class to modify the query for WooCommerce
- * use $this->watch() to watch for $_GET parameters
- * and $this->woo_filter($method) to add a filter to watch
- * 
- *  Use methods manually
- *  
- *  @example
- *  $woo_query = new \TPF\Woo_Query;
- *  add_action('woocommerce_product_query', [$woo_query, 'on_sale']);
- * 
- *  @example With additional parameters
- *  add_action('woocommerce_product_query', function($q) use ($woo_query) {
- *    $woo_query->with_rating($q, 3);
- *  });
- * 
- *  @example update query array using filter
- *  add_action('init', function () {
- *    add_filter('tpf_woo_query_filters', function($filters) {
- *      $filters['Min/Max Price] = [
- *        'name' => 'from_10_20',
- *        'method' => 'by_price',
- *        'params' => ['min' => 10, 'max' => 20],
- *      ];
- *      $filters['My Brand'] = [
- *       'name' => 'brand',
- *        'method' => 'by_meta',
- *        'params' => [
- *          'key' => 'brand',
- *          'value' => 203,
- *          'compare' => '=',
- *      ];
- *      return $filters;
- *    });
- *  }
- *
+ * You can use this class to modify WooCommerce query products on the front-end.
+ * Use $this->watch() to watch for $_GET parameters
  */
 
 namespace TPF;
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 class Woo_Query {
 
+  public $search_filters;
+
   public function __construct() {
+    $this->search_filters = new \TPF\SearchFilters;
   }
 
   /**
-   * Define default filters here
-   * - name is the $_GET parameter
-   * - method is name of the method to call
-   * - params are the parameters to pass to the method
+   * Watch
+   * Add filters to the watch list
+   * @param name is the $_GET parameter
+   * @param method is name of the method to call
+   * @param params are the parameters to pass to the method
    */
-  public function filters() {
-    $filters = [
-      'On Sale' => [
-        'name' => 'on_sale',
-        'value' => 1,
-        'method' => 'on_sale',
-        'params' => [],
-      ],
-      'With Rating' => [
-        'name' => 'with_rating',
-        'value' => 1,
-        'method' => 'with_rating',
-        'params' => ['min' => 1],
-      ],
-    ];
-    $filters = apply_filters('tpf_woo_query_filters', $filters);
-    return $filters;
-  }
+  public function watch() {
+    // Get filters array from the filters class
+    $filter_groups = $this->search_filters->filters();
 
-  /**
-   * Set Filters
-   * Only for "predefined" params, additional parameters are not supported
-   * $key => $val
-   * where 
-   * - name is the $_GET parameter
-   * - method is name of the method to call
-   * - params are the parameters to pass to the method
-   */
-  public function watch($filters = []) {
-    $filters = count($filters) > 0 ? $filters : $this->filters();
-    foreach ($filters as $filter) {
-      $name = $filter['name'];
-      $method = $filter['method'];
-      $params = !empty($filter['params']) ? $filter['params'] : [];
-      if (isset($_GET[$name])) {
-        add_action('woocommerce_product_query', function ($q) use ($method, $params) {
-          $this->{$method}($q, $params);
-        });
+    /**
+     * Loop trough filter groups
+     * and add filter by filter to the watch list (query)
+     * Radio and select as single options are added to the query by group[name] = filter[value]
+     * All checkboxes are added to the query as they are multi-value
+     */
+    foreach ($filter_groups as $group) {
+      if ($group['type'] == "radio" || $group['type'] == "select") {
+        foreach ($group['items'] as $filter) {
+          $GET_NAME = isset($_GET[$group['name']]) ? $_GET[$group['name']] : false;
+          if ($filter['value'] == $GET_NAME) {
+            // $filters[] = $filter;
+            $name = $group['name'];
+            $method = $filter['method'];
+            $params = !empty($filter['params']) ? $filter['params'] : [];
+            if (isset($_GET[$name])) {
+              add_action('woocommerce_product_query', function ($q) use ($method, $params) {
+                $this->{$method}($q, $params);
+              });
+            }
+          }
+        }
+      } else {
+        foreach ($group['items'] as $filter) {
+          // $filters[] = $filter;
+          $name = $filter['name'];
+          $method = $filter['method'];
+          $params = !empty($filter['params']) ? $filter['params'] : [];
+          if (isset($_GET[$name])) {
+            add_action('woocommerce_product_query', function ($q) use ($method, $params) {
+              $this->{$method}($q, $params);
+            });
+          }
+        }
       }
     }
   }

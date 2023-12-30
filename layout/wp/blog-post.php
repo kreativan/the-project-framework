@@ -1,10 +1,9 @@
 <?php if (have_posts()) : while (have_posts()) : the_post();
-
     // Meta
     $date = get_the_date('d M Y');
     $categories = get_the_category();
     $category = $categories[0];
-
+    dump($category)
 ?>
 
     <h1><?php the_title(); ?></h1>
@@ -13,11 +12,13 @@
       <li>
         <span> <?= $date ?></span>
       </li>
-      <li>
-        <a class="uk-link-heading" href="<?= get_category_link($category->term_id) ?>" title="<?= $category->name ?>">
-          <?= $category->name ?>
-        </a>
-      </li>
+      <?php if ($category->ID != 1) : ?>
+        <li>
+          <a class="uk-link-heading" href="<?= get_category_link($category->term_id) ?>" title="<?= $category->name ?>">
+            <?= $category->name ?>
+          </a>
+        </li>
+      <?php endif; ?>
     </ul>
 
     <?php

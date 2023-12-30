@@ -21,6 +21,10 @@
 
 namespace TPF;
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 class CustomPrices {
 
   public function __construct() {

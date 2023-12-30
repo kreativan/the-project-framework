@@ -9,10 +9,26 @@
 
 namespace TPF;
 
+if (!defined('ABSPATH')) {
+  exit;
+}
 
 class Post_Type {
 
+  public $name;
+  public $title;
+  public $singular_name;
+  public $icon;
+  public $menu_position;
+  public $submenu_title;
+  public $supports;
+  public $main_menu_slug;
+  public $show_in_menu;
+
   public function __construct($data = []) {
+
+    // main menu slug
+    $this->main_menu_slug = !empty($data['main_menu_slug']) ? $data['main_menu_slug'] : "site-settings";
 
     $this->name = !empty($data['name']) ? $data['name'] : "";
     $this->title = !empty($data['title']) ? $data['title'] : "";
@@ -21,13 +37,14 @@ class Post_Type {
     $this->icon = !empty($data['icon']) ? $data['icon'] : "superhero";
     $this->menu_position = !empty($data['menu_position']) ? $data['menu_position'] : 3;
     $this->submenu_title = !empty($data['submenu_title']) ? $data['submenu_title'] : "";
+    $this->show_in_menu = !empty($data['show_in_menu']) && $data['show_in_menu'] ? $data['show_in_menu'] : false;
 
     $this->supports = !empty($data['supports']) ? $data['supports'] : ['title'];
 
     $admin_columns = !empty($data['admin_columns']) ? $data['admin_columns'] : [];
 
     add_action('init', [$this, 'create_post_type'], 0);
-    add_action('admin_menu', [$this, 'cerate_submenu']);
+    if (!$this->show_in_menu) add_action('admin_menu', [$this, 'cerate_submenu']);
     new Admin_Columns("{$this->name}", $admin_columns);
   }
 
@@ -47,7 +64,7 @@ class Post_Type {
       'hierarchical'          => true,
       'public'                => true,
       'show_ui'               => true,
-      'show_in_menu'          => false,
+      'show_in_menu'          => $this->show_in_menu,
       'menu_position'         => $this->menu_position,
       'menu_icon'             => $this->icon,
       'show_in_admin_bar'     => false,
@@ -65,14 +82,15 @@ class Post_Type {
   }
 
   public function cerate_submenu() {
+    if (!$this->show_in_menu) return;
     add_submenu_page(
-      "project", // main menu slug
+      $this->main_menu_slug, // main menu slug default: 'project'
       $this->submenu_title, // title
       $this->submenu_title, // menu_title
-      'manage_options', // permision
+      'manage_options', // permission
       "edit.php?post_type={$this->name}", // slug 
       null, // callback function
-      1,
+      $this->menu_position,
     );
   }
 }

@@ -2,10 +2,13 @@
 
 namespace TPF;
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 class WOO {
 
   public function __construct($params = []) {
-
 
     // Add WooCommece support
     add_theme_support('woocommerce');
@@ -28,6 +31,17 @@ class WOO {
       $woo_query = new \TPF\Woo_Query;
       $woo_query->watch();
     });
+
+    /**
+     * Search Filters
+     */
+    if (the_project('search_filters')) {
+      $search_filters = new \TPF\SearchFilters;
+      $search_filters->create_post_type();
+      if (function_exists('acf_add_local_field_group')) {
+        TPF_ACF_Group_Init('search_filters');
+      }
+    }
 
     //  Discounts
     if (the_project('discounts')) {
@@ -105,8 +119,19 @@ class WOO {
       'wc-blocks-style-cart',
       'wc-blocks-style-checkout',
       'wc-blocks-style-mini-cart-contents',
-      'classic-theme-styles-inline'
+      'classic-theme-styles-inline',
+      //'wc-blocks-vendors-style',
+      //'wc-all-blocks-style',
     );
+
+    /**
+     * Remove some styles for non-admins
+     * to keep query monitor happy
+     */
+    if (!current_user_can('administrator')) {
+      $styles[] = 'wc-blocks-vendors-style';
+      $styles[] = 'wc-all-blocks-style';
+    };
 
     /**
      * Array of scripts to be removed
@@ -114,11 +139,15 @@ class WOO {
     $scripts = array(
       'wc-blocks-middleware',
       'wc-blocks-data-store',
+      // 'jquery-blockui',
     );
 
-    // remove wp util if not on product page
-    // and scripts added by product swatches
-    if (!is_product()) {
+    /**
+     * Remove wp util if not on product page
+     * but only if current user in not admin (to keep query monitor happy).
+     * wp-util also used by product swatches plugin, so thats why we enable it only on product page.
+     */
+    if (!is_product() && !current_user_can('administrator')) {
       $scripts[] = 'wp-util';
     }
 

@@ -33,7 +33,7 @@ $stock_label_class = $product->is_in_stock() ? 'success' : 'danger';
 
     <?php
     if ($enable_ratings == 'yes') {
-      tpf_render('layout/common/rating-stars', [
+      render('layout/common/rating-stars', [
         'rating' => $rating,
         'class' => 'uk-display-inline-block',
         'ratio' => '1',

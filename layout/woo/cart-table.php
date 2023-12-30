@@ -28,7 +28,7 @@ $cart = WC()->cart->get_cart();
           </td>
 
           <td class="uk-padding-remove-horizontal uk-text-right">
-            <a href="#" class="remove-from-cart uk-link-reset" onclick="woo.removeFromCart(<?= $item['product_id'] ?>, '<?= $item['key']; ?>', false)">
+            <a href="#" class="remove-from-cart uk-link-reset uk-margin-small-right" onclick="woo.removeFromCart(<?= $item['product_id'] ?>, '<?= $item['key']; ?>', false)">
               <i class="toggle-icon uk-text-danger" uk-icon="trash" class="uk-text-danger"></i>
               <i class="toggle-spinner uk-hidden uk-spinner uk-text-danger" uk-spinner="ratio: 0.7;"></i>
             </a>
@@ -40,7 +40,7 @@ $cart = WC()->cart->get_cart();
     <tfoot>
       <tr>
         <td class="uk-padding-remove-horizontal" colspan="2">
-          Subtotal
+          <?= __('Subtotal', 'the-project-framework') ?>
         </td>
         <td class="uk-text-right">
           <h5 class="uk-text-bold uk-margin-remove">
@@ -54,7 +54,7 @@ $cart = WC()->cart->get_cart();
 <?php else : ?>
 
   <p class="uk-text-muted">
-    Cart is empty
+    <?= __('Cart is empty', 'the-project-framework') ?>
   </p>
 
 <?php endif; ?>

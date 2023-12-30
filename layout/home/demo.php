@@ -42,7 +42,7 @@
         </li>
 
         <li>
-          <a href="#" hx-get="?htmx=layout/htmx/init/" hx-target="#main">
+          <a href="#" <?= htmx_modal('layout/htmx/modal/') ?>>
             HTMX
           </a>
           <p class="uk-text-small uk-text-small uk-margin-remove">

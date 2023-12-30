@@ -1,5 +1,10 @@
 <?php
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
+
 $woo = [
   "woo" => [
     "type" => "radio",
@@ -28,5 +33,16 @@ $discounts = [
   ],
 ];
 
+$search_filters = [
+  'search_filters' => [
+    "type" => "radio",
+    "label" =>  "Search Filters",
+    "options" => ["1" => "Enabled", "0" => "Disabled"],
+    "default" => "0",
+    "description" => "Enable search filters for WooCommerce",
+  ],
+];
+
 $woo_arr['WooCommerce'] = $woo;
 $woo_arr['Discounts'] = $discounts;
+$woo_arr['Search Filters'] = $search_filters;

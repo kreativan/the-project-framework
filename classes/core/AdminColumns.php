@@ -6,8 +6,14 @@
 
 namespace TPF;
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 class Admin_Columns {
 
+  public $post_type;
+  public $data;
 
   public function __construct($post_type, $data = []) {
 

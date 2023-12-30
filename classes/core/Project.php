@@ -8,7 +8,20 @@
 
 namespace TPF;
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 class The_Project {
+
+  public $gutenberg;
+  public $menu;
+  public $title;
+  public $icon;
+  public $ajax;
+  public $htmx;
+  public $htmx_version;
+  public $acf_options;
 
   public function __construct($data) {
 
@@ -34,12 +47,6 @@ class The_Project {
     if (is_admin()) {
       add_action('init', [$this, 'admin_assets']);
     }
-
-    // remove admin color scheme
-    add_action('admin_head', function () {
-      global $_wp_admin_css_colors;
-      $_wp_admin_css_colors = [];
-    });
 
     // allow svg uploads 
     add_filter('upload_mimes', [$this, 'cc_mime_types']);
@@ -69,8 +76,18 @@ class The_Project {
     add_action('wp_loaded', function () {
       if (!is_admin() && $this->get_htmx_file()) {
         $layout = $this->get_htmx_file();
-        tpf_render($layout, $_GET);
+        render($layout, $_GET);
         exit();
+      }
+    });
+
+    /**
+     * Dashboard Widget
+     * if current user is administrator
+     */
+    add_action('init', function () {
+      if (current_user_can('administrator')) {
+        add_action('wp_dashboard_setup', [$this, 'add_dashboard_widget']);
       }
     });
   }
@@ -87,10 +104,20 @@ class The_Project {
       $this->title, // title
       $this->title, // menu_title
       'manage_options', // permision
-      'project', // slug
-      [$this, 'project_render_view'], // callback function
+      'site-settings', // slug - 'project' or 'site-settings'
+      null, // null or callback function [$this, 'project_render_view'],
       $this->icon, // icon
       2, // position/sort
+    );
+
+    add_submenu_page(
+      'site-settings', // main menu slug default: 'project'
+      'Options', // title
+      'Options', // menu_title
+      'manage_options', // permission
+      "admin.php?page=site-settings", // slug 
+      null, // callback function
+      0,
     );
   }
 
@@ -105,7 +132,7 @@ class The_Project {
         'page_title' => $title,
         'menu_title' => $title,
         'menu_slug' => 'site-settings',
-        'capability' => 'edit_posts',
+        'capability' => 'manage_options',
         'parent_slug' => 'project',
         'position' => '1',
       ]);
@@ -118,6 +145,25 @@ class The_Project {
     if (file_exists($view_file)) include($view_file);
   }
 
+  // --------------------------------------------------------- 
+  // Dashboard 
+  // --------------------------------------------------------- 
+
+  function add_dashboard_widget() {
+    wp_add_dashboard_widget(
+      'the_project_widget', // Widget slug
+      'The Project', // Widget title
+      [$this, 'the_project_widget'], // Callback function to render widget content
+      'side',
+      'high',
+    );
+  }
+
+  function the_project_widget() {
+    include(tpf_path() . "admin/views/dashboard-widget.php");
+  }
+
+
   // ========================================================= 
   // Assets 
   // ========================================================= 
@@ -127,9 +173,8 @@ class The_Project {
    */
   public function load_assets() {
 
-    // If user is not logged-in disable loading jquery
-    // on all except woocommerce related pages 
-    if (!is_user_logged_in() && !is_woocommerce()) {
+    // If not woocomemrce page disable jquery
+    if (!is_plugin_active('query-monitor/query-monitor.php') && function_exists('is_cart') && !is_cart() && !is_checkout() && !is_account_page() && !is_product()) {
       wp_deregister_script('jquery');
       wp_deregister_script('jquery-migrate');
     }
@@ -144,7 +189,7 @@ class The_Project {
 
     // HTMX
     if ($this->htmx) {
-      wp_register_script('htmx', tpf_url() . "lib/js/htmx.min.js", [], $this->htmx_version, true);
+      wp_register_script('htmx', tpf_url() . "lib/htmx-1.9.7/htmx.min.js", [], '1.9.7', true);
       wp_enqueue_script('htmx');
     }
 
@@ -258,13 +303,16 @@ class The_Project {
     wp_register_style("the_project_admin_css", $css_file, null, $suffix);
     wp_enqueue_style('the_project_admin_css');
 
-    $swal = tpf_url() . "lib/sweetalert2/sweetalert2.all.min.js";
-    wp_enqueue_script("rm_script", $swal, false, $suffix);
+    //$swal = tpf_url() . "lib/sweetalert2/sweetalert2.all.min.js";
+    //wp_enqueue_script("rm_script", $swal, false, $suffix);
 
-    $macy_js = tpf_url() . "lib/macy.js-2.5.1/dist/macy.js";
-    wp_enqueue_script('tpf-macy-js', $macy_js, array('wp-api'));
+    //$macy_js = tpf_url() . "lib/macy.js-2.5.1/dist/macy.js";
+    //wp_enqueue_script('tpf-macy-js', $macy_js, array('wp-api'));
 
     $admin_js_path = tpf_url() . "admin/assets/admin.js";
     wp_enqueue_script('tpf-admin-js', $admin_js_path, array('wp-api'));
+
+    $htmx = tpf_url() . "lib/js/htmx.min.js";
+    wp_enqueue_script('tpf-htmx', $htmx, array('wp-api'));
   }
 }

@@ -1,21 +1,7 @@
 <?php
 
-// Navbar dropdown html/css update
-class Walker_Navbar extends Walker_Nav_Menu {
-  function start_lvl(&$output, $depth = 0, $args = null) {
-    $indent = str_repeat("\t", $depth);
-    $output .= "<div class='uk-navbar-dropdown'>";
-    $output .= "\n$indent<ul class=\"uk-nav uk-navbar-dropdown-nav\">\n";
-  }
-}
-
-// Navbar dropdown html/css update
-class Walker_MobileMenu extends Walker_Nav_Menu {
-
-  function start_lvl(&$output, $depth = 0, $args = null) {
-    $indent = str_repeat("\t", $depth);
-    $output .= "\n$indent<ul class=\"uk-nav-sub\">\n";
-  }
+if (!defined('ABSPATH')) {
+  exit;
 }
 
 /**
@@ -24,7 +10,7 @@ class Walker_MobileMenu extends Walker_Nav_Menu {
  *  @example tpf_get_menu('Main Menu');
  *  @return object;
  */
-function tpf_get_menu($menu) {
+function TPF_Get_Menu($menu) {
   $menu_items = wp_get_nav_menu_items($menu);
   return $menu_items;
 }
@@ -35,11 +21,11 @@ function tpf_get_menu($menu) {
 
 /**
  * Get custom menu array
- * @param string $name - menu name
+ * @param string $selector - menu name or id
  */
-function tpf_get_menu_array($name) {
+function TPF_Get_Menu_Array($selector) {
 
-  $menu_items = wp_get_nav_menu_items($name);
+  $menu_items = wp_get_nav_menu_items($selector);
   if (empty($menu_items)) return;
 
   $array = [];
@@ -84,7 +70,7 @@ function tpf_get_menu_array($name) {
   return $array;
 }
 
-function tpf_menu_item_array($item) {
+function TPF_Menu_item_Array($item) {
   $item_arr = [
     'id' => $item->ID,
     'title' => $item->title,

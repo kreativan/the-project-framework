@@ -1,9 +1,13 @@
 <?php
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 /**
  * Get default user page
  */
-function tpf_user_page($param = '') {
+function TPF_User_Page($param = '') {
   $id = the_project('user_page');
   if (empty($id)) return '';
   $post = get_post($id);

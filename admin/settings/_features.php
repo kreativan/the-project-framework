@@ -1,29 +1,20 @@
 <?php
+if (!defined('ABSPATH')) {
+  exit;
+}
 
-//  Translator
-// ===========================================================
 
-$translator = [
-  "translator" => [
+$seo = [
+  "seo" => [
     "type" => "radio",
-    "label" =>  "Translator",
+    "label" =>  "Basic SEO",
     "options" => ["1" => "Enabled", "0" => "Disabled"],
-    "default" => "1",
-    "description" => 'Translate hardcoded strings <code>__x()</code>'
+    "default" => "0",
+    "description" => "Pages meta title, description, image...",
   ],
 ];
 
-if (the_project("translator")) {
-  $translator['translator_plugin_dir_scan'] = [
-    "type" => "radio",
-    "label" =>  "Scan Plugin Directory",
-    "options" => ["1" => "Enabled", "0" => "Disabled"],
-    "default" => "1",
-    "description" => 'Include plugin folder in searches'
-  ];
-}
-
-$features_arr['Translator'] = $translator;
+$features_arr['SEO'] = $seo;
 
 //  Forms
 // ===========================================================

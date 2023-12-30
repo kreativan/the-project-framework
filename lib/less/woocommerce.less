@@ -9,6 +9,7 @@
 @import "./woocommerce/account.less";
 @import "./woocommerce/cart.less";
 @import "./woocommerce/checkout.less";
+@import "./woocommerce/orders.less";
 
 @import "./woocommerce/product-single.less";
 
@@ -18,8 +19,22 @@
 // WooCommerce 
 // --------------------------------------------------------- 
 
-.woocommerce form.checkout_coupon,
-.woocommerce form.login,
-.woocommerce form.register {
-  border: 1px solid @global-border !important;
+.woocommerce {
+
+  form.checkout_coupon,
+  form.login,
+  form.register {
+    border: 1px solid @global-border !important;
+  }
+
+  a.remove {
+    font-weight: 400 !important;
+    line-height: 0.85 !important;
+
+    &:hover {
+      background: @global-danger-background !important;
+    }
+  }
+
+
 }

@@ -7,6 +7,10 @@
 
 namespace TPF;
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 class Form {
 
   public $fields;
@@ -19,7 +23,8 @@ class Form {
   public $button_text;
   public $labels;
   public $grid_size;
-
+  public $ajax;
+  public $enctype;
 
   public function __construct() {
 
@@ -146,6 +151,9 @@ class Form {
           case 'hidden':
             $form .= $this->hidden($field);
             break;
+          case 'wysiwyg':
+            $form .= $this->wysiwyg($field);
+            break;
           default:
             $form .= $this->text($field);
         }
@@ -196,6 +204,7 @@ class Form {
       'grid' => isset($field['grid']) ? $field['grid'] : "1-1",
       'attr' => isset($field['attr']) ? $field['attr'] : "",
       'description' => isset($field['description']) ? $field['description'] : "",
+      "body" => isset($field['body']) ? $field['body'] : "",
     ];
     return $array;
   }
@@ -267,17 +276,18 @@ class Form {
     $f = $this->field_data($field);
     $class = $f['class'] ? $f['class'] : 'uk-checkbox';
     $options = isset($field['options']) ? $field['options'] : "";
-    $radio = "";
+    $placeholder = isset($field['placeholder']) ? $field['placeholder'] : "";
+    $html = "";
     foreach ($options as $key => $value) {
       $checked = is_array($f['value']) && in_array($key, $f['value']) ? 'checked' : '';
-      $radio .= "
+      $html .= "
         <label class='uk-margin-small-right'>
-          <input class='$class' type='checkbox' name='{$f['name']}[]' $checked {$f['attr']}>
-          <span>$value</span>
+          <input class='$class' type='checkbox' name='{$f['name']}' $checked {$f['attr']}>
+          <span style='margin-left: 5px;'>$placeholder</span>
         </label>
       ";
     }
-    return $radio;
+    return $html;
   }
 
   public function date($field) {
@@ -296,6 +306,10 @@ class Form {
     $out .= "<input class='{$class}' type='text' placeholder='{$f['placeholder']}' disabled>";
     $out .= "</div>";
     return $out;
+  }
+
+  public function wysiwyg($field) {
+    return $field['body'];
   }
 
 

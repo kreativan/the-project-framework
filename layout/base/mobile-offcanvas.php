@@ -5,7 +5,7 @@
 
     <div class="uk-margin-auto-vertical">
       <?php
-      tpf_render('layout/menu/mobile-menu-wp', ['menu' => 'navbar']);
+      render('layout/menu/mobile-menu-wp', ['menu' => 'navbar']);
       ?>
     </div>
 

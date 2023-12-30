@@ -2,6 +2,11 @@
 @woo-sale-badge-color: white;
 @woo-sale-badge-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 
+@woo-sale-badge-width: 50px;
+@woo-sale-badge-height: 50px;
+@woo-sale-badge-font-size: 0.8rem;
+@woo-sale-badge-font-weight: 400;
+
 // --------------------------------------------------------- 
 // Sale Badge 
 // --------------------------------------------------------- 
@@ -9,9 +14,16 @@
 .woocommerce {
 
   span.onsale {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: @woo-sale-badge-width;
+    height: @woo-sale-badge-height;
     background: @woo-sale-badge-bg !important;
     color: @woo-sale-badge-color !important;
     box-shadow: @woo-sale-badge-box-shadow;
+    font-size: @woo-sale-badge-font-size !important;
+    font-weight: @woo-sale-badge-font-weight !important;
   }
 
 }

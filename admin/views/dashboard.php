@@ -1,25 +1,12 @@
-<h1>
-  <i class="dashicons-before <?= the_project('icon') ?>"></i>
-  <?= the_project("name") ?>
-</h1>
-
-<hr class="p-margin" />
-
 <?php
-do_action('tpf_dashboard_before');
-?>
 
+/**
+ * The Project Dashboard
+ * It is not used by default, default project page is 'site-settings'.
+ * If you set the default project page slug to 'project', this file will be loaded
+ * @see The_Project Class and @method project_admin_menu()
+ */
 
-<div id="tpf-dashboard" class="tpf-grid" data-grid="3" data-grid-l="2">
-
-  <?php
-  tpf_include("admin/views/_project.php");
-  tpf_include("admin/views/_menu.php");
-  do_action('tpf_dashboard_grid');
-  ?>
-
-</div>
-
-<?php
-do_action('tpf_dashboard_after');
-?>
+if (!defined('ABSPATH')) {
+  exit;
+}

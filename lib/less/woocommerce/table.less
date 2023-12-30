@@ -3,6 +3,7 @@
 @woo-table-thead-font-size: 0.8rem;
 @woo-table-thead-font-weight: 400;
 @woo-table-thead-text-transform: uppercase;
+@woo-table-padding: @table-cell-padding-vertical @table-cell-padding-horizontal;
 
 // ========================================================= 
 // woo: table 
@@ -19,6 +20,31 @@
       font-weight: @woo-table-thead-font-weight !important;
       font-size: @woo-table-thead-font-size !important;
       text-transform: @woo-table-thead-text-transform !important;
+    }
+
+  }
+
+  th,
+  td {
+    padding: @woo-table-padding !important;
+  }
+
+  .woocommerce-button {
+    line-height: @button-small-line-height !important;
+    font-size: @button-small-font-size !important;
+  }
+
+  .wc-item-meta {
+
+    margin-top: 5px;
+    padding-left: 0px;
+
+    p {
+      margin: 0;
+    }
+
+    li {
+      font-size: @global-small-font-size;
     }
 
   }

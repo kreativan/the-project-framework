@@ -35,20 +35,20 @@
       .uk-nav() !important;
       .uk-nav-default() !important;
 
-      &>li {
+      & > li {
         padding: 5px 0;
       }
 
-      &>li>a {
+      & > li > a {
         color: @woo-account-nav-color;
         text-decoration: none;
       }
 
-      &>li:hover>a {
+      & > li:hover > a {
         color: @woo-account-nav-hover-color;
       }
 
-      &>li.is-active>a {
+      & > li.is-active > a {
         color: @woo-account-nav-active-color;
       }
     }
@@ -58,7 +58,7 @@
   .woocommerce-MyAccount-content {
 
     box-sizing: border-box;
-    width:~"calc(100% - @{woo-account-nav-width})";
+    width: ~"calc(100% - @{woo-account-nav-width})";
     min-height: @woo-account-min-height;
 
     & when(@woo-account-nav-pos=right) {
@@ -77,6 +77,16 @@
 
   .woocommerce-privacy-policy-text {
     font-size: @global-small-font-size;
+  }
+
+  @media(max-width: @breakpoint-medium) {
+    .woocommerce-MyAccount-content,
+    .woocommerce-MyAccount-navigation {
+      padding: 0;
+      width: 100%;
+      float: none;
+      margin: 20px 0;
+    }
   }
 
 

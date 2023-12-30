@@ -1,5 +1,5 @@
-<div id="htmx-modal" uk-modal>
-  <div class="uk-modal-dialog">
+<div id="htmx-modal" class="uk-flex-top" uk-modal>
+  <div class="uk-modal-dialog uk-margin-auto-vertical">
 
     <button type="button" class="uk-modal-close-default" uk-close></button>
 

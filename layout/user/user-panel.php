@@ -39,7 +39,7 @@ $view_plg = $TPF->path() . "{$view}.php";
       <div>
         <?php
         if (file_exists($view_plg) || file_exists($view_tmpl)) {
-          tpf_render($view, [
+          render($view, [
             "user" => $user,
           ]);
         } else {
@@ -51,7 +51,7 @@ $view_plg = $TPF->path() . "{$view}.php";
 
     <div class="uk-width-medium@m uk-visible@m">
       <div>
-        <?php tpf_render('layout/user/user-nav') ?>
+        <?php render('layout/user/user-nav') ?>
       </div>
     </div>
 

@@ -6,13 +6,12 @@ namespace TPF;
  *  Plugin Name: The Project Framework
  *  Description: Framework for building custom websites
  *  Version: 0.0.1
- *  Author: kreativan.dev
+ *  Author: Ivan Milincic
  *  Author URI: http://kreativan.dev/
  */
 
-// If this file is called directly, abort.
-if (!defined('WPINC')) {
-  die;
+if (!defined('ABSPATH')) {
+  exit;
 }
 
 // error_reporting(E_ALL ^ E_NOTICE); 
@@ -21,10 +20,9 @@ if (!defined('WPINC')) {
 include_once("admin/settings/settings.php");
 include_once("functions.php");
 
-tpf_autoload("classes/core");
-tpf_autoload("classes/features");
-tpf_autoload("classes/utility");
-tpf_autoload("functions");
+TPF_Autoload("functions");
+TPF_Autoload("classes/core");
+TPF_Autoload("classes/features");
 
 // Init Text Domain
 add_action('plugins_loaded', function () {
@@ -50,14 +48,14 @@ new The_Project([
   "menu" => "true",
 
   // Admin menu icon
-  "icon" => the_project('icon') ? "dashicons-" . the_project('icon') : 'dashicons-generic',
+  "icon" => the_project('icon') ? "dashicons-" . the_project('icon') : 'admin-generic',
 
   /**
    *  ACF Options Page - Site Settings
    *  Menu Title or false (string)
    *  Need to create ACF Options field group and asign it to the Options Page
    */
-  'acf_options' => "Site Settings",
+  'acf_options' => "Options",
 
   /**
    *  Enable ajax route on front end?
@@ -71,18 +69,34 @@ new The_Project([
    *  Use /htmx/ route to fetch content
    */
   "htmx" => the_project("htmx"),
-  "htmx_version" => "1.8.0",
+  "htmx_version" => "1.9.9",
 
 ]);
 
-// Create The ProjectSettings
+/**
+ * Create The ProjectSettings
+ * @see admin/settings/settings.php
+ */
 new The_Project_Settings;
 
-// Advanced Custom Fields Init
+/**
+ * Advanced Custom Fields Init
+ * @see classes/core/Acf.php
+ */
 new ACF();
 
-// SMTP
-if (the_project('smtp_enable')) new SMTP();
+/**
+ * Enable SMTP
+ */
+if (the_project('smtp_enable')) {
+  new SMTP();
+}
+
+/**
+ * Init TPF Menu Class 
+ * @see classes/core/Menu.php
+ */
+new \TPF_Menu();
 
 // --------------------------------------------------------- 
 // Features 
@@ -100,30 +114,13 @@ if (the_project('content_blocks')) new Content_Blocks(true);
 // Features: Users
 if (the_project('manage_users')) new Users;
 
-// Features: translator
-if (the_project('translator')) {
-
-  new Submenu([
-    "title" => "Translator",
-    "slug" => "translator",
-    "view" => "translator",
-  ]);
-
-  // Redirect on translator
-  if (is_admin() && isset($_GET['tpf_translator_scan'])) {
-    add_action('init', function () {
-      wp_redirect('./admin.php?page=translator');
-    });
-  }
-}
-
 // --------------------------------------------------------- 
 // WooCommerce 
 // --------------------------------------------------------- 
 
 if (the_project('woo')) {
   // auto all woo classes
-  tpf_autoload("classes/woo");
+  TPF_Autoload("classes/woo");
   // init woo
   new Woo();
 }

@@ -1,5 +1,56 @@
 <?php
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
+/**
+ * Image
+ * @param object $image
+ * @param array $options
+ * @param $options['size'] string
+ * @param $options['class'] string
+ * @param $options['eager'] bool
+ * @param $options['lazy'] bool
+ */
+function image($image, $options = []) {
+  return tpf_image($image, $options);
+}
+
+/**
+ * Image SVG uk-svg
+ * @param object $image
+ * @param array $options
+ * @param string $options['type'] - stroke / fill
+ * @param string $options['color'] - hex
+ * @param string $options['stroke'] - default 1.5
+ * @param string $options['size'] - default 60
+ * @param string $options['class']
+ */
+function uk_svg($image, $options = []) {
+  return tpf_image_svg($image, $options);
+}
+
+/**
+ * Render SVG Icon from assets/svg folder
+ * @param string $svg_file - svg file path relative to the theme folder
+ * @param array $options
+ * @param string $options['folder'] - (optional) default is assets/svg set in the project settings
+ * @param string $options['type'] - stroke / fill
+ * @param string $options['color'] - hex
+ * @param string $options['size'] - default 1em
+ * @param string $options['class']
+ * @param string $options['style'] - style=""
+ */
+function svg($svg_file, $options = []) {
+  tpf_svg($svg_file, $options);
+}
+
+// --------------------------------------------------------- 
+// TPF 
+// --------------------------------------------------------- 
+
+
 /**
  * Image
  * @param object $image 
@@ -11,22 +62,27 @@ function tpf_image($image, $options = []) {
   if (empty($image) || $image == "") return false;
 
   // options
-  $size = isset($options['size']) ? $options['size'] : 'large';
+  $size = isset($options['size']) ? $options['size'] : '';
   $class = isset($options['class']) ? $options['class'] : "";
   $eager = isset($options['eager']) && $options['eager'] == 1 ? true : false;
+  $lazy = empty($options['lazy']) || $options['lazy'] != "false"  ? true : false;
 
   $cls = "";
   $uk_img = "uk-img";
 
-  $src = $image['sizes'][$size];
-  $width = $image['sizes']["{$size}-width"];
-  $height = $image['sizes']["{$size}-height"];
+  $src = ($size != "") ? $image['sizes'][$size] : $image['url'];
+  $width = ($size != "") ? $image['sizes']["{$size}-width"] : $image['width'];
+  $height = ($size != "") ? $image['sizes']["{$size}-height"] : $image['height'];
   $alt = $image['alt'] != '' ? $image['alt'] : $image['title'];
 
   if ($eager) $uk_img = 'uk-img="loading: eager"';
   if ($class != "") $cls = "class='$class'";
 
-  echo "<img {$cls} data-src='{$src}' width='$width' height='$height' alt='{$alt}' {$uk_img} />";
+  if ($lazy) {
+    echo "<img {$cls} data-src='{$src}' width='$width' height='$height' alt='{$alt}' {$uk_img} />";
+  } else {
+    echo "<img {$cls} src='{$src}' width='$width' height='$height' alt='{$alt}' />";
+  }
 }
 
 
@@ -42,7 +98,7 @@ function tpf_image_svg($image, $options = []) {
 
   $type = isset($options['type']) ? $options['type'] : 'stroke';
   $color = isset($options['color']) ? $options['color'] : 'currentColor';
-  $stroke_width = isset($options['stroke_width']) ? $options['stroke_width'] : 1.5;
+  $stroke_width = isset($options['stroke']) ? $options['stroke'] : 1.5;
   $size = isset($options['size']) ? $options['size'] : 60;
 
   $class = "svg-image";
@@ -104,6 +160,7 @@ function tpf_svg($svg_file, $options = []) {
 
   $style = "width:$size;height:$size;line-height:0.5;";
   if ($color != "") {
+    $style .= "color: $color;";
     $style .= ($type == "stroke") ? "stroke: $color;" : "fill: $color;";
   }
   $style .= !empty($sty) ? " $sty" : "";

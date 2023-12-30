@@ -29,7 +29,7 @@
 
   <div class="uk-width-auto@m uk-visible@l">
     <div id="woo-sidebar" style="min-width: 180px;">
-      <?php tpf_render('layout/woo/sidebar'); ?>
+      <?php render('layout/woo/sidebar'); ?>
     </div>
   </div>
 

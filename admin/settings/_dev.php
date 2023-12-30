@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 $dev = [
   "dev_mode" => [
     "type" => "radio",
@@ -14,6 +18,13 @@ $dev = [
     "options" => ["1" => "Enabled", "0" => "Disabled"],
     "default" => "1",
     "description" => 'Load <code>project.js</code> on front-end',
+  ],
+  "uikit_lightbox" => [
+    "type" => "radio",
+    "label" =>  "UIkit Lightbox",
+    "options" => ["1" => "Enabled", "0" => "Disabled"],
+    "default" => "0",
+    "description" => 'Trigger uikit lightbox on all <code>.uikit-lightbox</code> elements based on <code>href</code> or <code>data-href</code> attributes',
   ],
   "ajax" => [
     "type" => "radio",

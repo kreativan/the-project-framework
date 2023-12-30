@@ -2,9 +2,19 @@
 
 namespace TPF;
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 class ACF_Forms {
 
+  public $post_type_data;
+
   public function __construct($init = false) {
+
+    if (is_admin()) {
+      add_filter('acf/fields/flexible_content/layout_title/name=form_fields', [$this, 'flexible_field_labels'], 10, 4);
+    }
 
     if ($init) {
 
@@ -15,6 +25,7 @@ class ACF_Forms {
         "icon" => "dashicons-feedback",
         "menu_position" => 5,
         "submenu_title" => "Forms",
+        "show_in_menu" => 'site-settings',
         "admin_columns" => [
           'id' => 'ID',
         ],
@@ -35,7 +46,7 @@ class ACF_Forms {
 
       // ACF field group
       if (function_exists('acf_add_local_field_group')) {
-        tpf_acf_group_init('form');
+        TPF_ACF_Group_Init('form');
       }
 
       /**
@@ -88,6 +99,50 @@ class ACF_Forms {
       unset($actions['trash']);
     }
     return $actions;
+  }
+
+  //-------------------------------------------------------- 
+  //  Flexible Field
+  //--------------------------------------------------------
+
+  /**
+   * Set layout labels based on the title or headline fields
+   */
+  public function flexible_field_labels($title, $field, $layout, $i) {
+
+    $subfield = !empty(get_sub_field('label')) ? get_sub_field('label') : get_sub_field('name');
+    $required = !empty(get_sub_field('required')) ? "<span style='color: red;'>*</span>" : "";
+    $width = get_sub_field('width');
+
+    switch ($width) {
+      case '2-3':
+        $width = "70%";
+        break;
+      case '3-5':
+        $width = "60%";
+        break;
+      case '1-2':
+        $width = "50%";
+        break;
+      case '2-5':
+        $width = "40%";
+        break;
+      case '1-3':
+        $width = "30%";
+        break;
+      case '1-4':
+        $width = "25%";
+        break;
+      case '1-5':
+        $width = "20%";
+        break;
+    }
+
+    $width = $width != "1-1" ? " - <span style='color: #555; font-weight: 400;'>{$width}</span>" : "";
+
+    if ($subfield) $title = $title . $width . " - " . $subfield . " $required";
+
+    return "<span title='hello'>$title</span>";
   }
 
   //-------------------------------------------------------- 
@@ -206,6 +261,7 @@ class ACF_Forms {
         "description" => $field['description'],
         "req" => $field['required'] == "1" ? true : false,
         "rows" => !empty($field['rows']) ? $field['rows'] : "",
+        "body" => !empty($field['body']) ? $field['body'] : "",
       ];
     }
 

@@ -3,7 +3,7 @@
 /**
  * Product Custom Fields
  * Works with ACF, so you need to create a acf flexible field 
- * with name "custom_fields" and asing it to the product page
+ * with name "custom_fields" and asign it to the product page
  * custom_fields: 
  *  - text
  *  - file
@@ -18,22 +18,38 @@
 
 namespace TPF;
 
+if (!defined('ABSPATH')) {
+  exit;
+}
 
 class ProductCustomFields {
 
+  public $upload_folder;
+  public $allowed_mime_types;
 
   public function __construct() {
 
-    // Register the file field on the product page
-    add_action('woocommerce_before_add_to_cart_button', [$this, 'register_custom_field']);
-    // Save the custom field value
-    add_action('woocommerce_add_cart_item_data', [$this, 'save_custom_field'], 10, 2);
-    // Display the custom field on cart and checkout
-    add_filter('woocommerce_get_item_data', [$this, 'display_custom_field'], 10, 2);
-    //  Display the custom field on order
-    add_action('woocommerce_order_item_meta_end', [$this, 'display_custom_field_on_order'], 10, 4);
-    // Validate the custom field before adding to cart
-    add_filter('woocommerce_add_to_cart_validation', [$this, 'validate_custom_field'], 10, 3);
+    // File upload folder
+    $this->upload_folder = 'orders';
+    // Allowed file types
+    $this->allowed_mime_types = array('image/jpeg', 'image/jpg', 'image/png', 'application/pdf');
+
+    /**
+     * Register the file field on the product page
+     */
+    add_action('woocommerce_before_add_to_cart_button', [$this, 'register_custom_fields']);
+
+    /**
+     * Cart and Checkout
+     */
+    add_action('woocommerce_add_cart_item_data', [$this, 'save_custom_fields'], 10, 2);
+    add_filter('woocommerce_get_item_data', [$this, 'display_custom_fields'], 10, 2);
+    add_filter('woocommerce_add_to_cart_validation', [$this, 'validate_custom_fields'], 10, 3);
+
+    /**
+     * Order
+     */
+    add_action('woocommerce_checkout_create_order_line_item', [$this, 'order_save_custom_fields'], 10, 4);
   }
 
   // --------------------------------------------------------- 
@@ -115,10 +131,13 @@ class ProductCustomFields {
   }
 
   // --------------------------------------------------------- 
-  // Save
+  // Cart and Checkout - Save and Display
   // ---------------------------------------------------------
 
-  public function save_custom_field($cart_item_data, $product_id) {
+  /**
+   * Save custom fields to the cart data
+   */
+  public function save_custom_fields($cart_item_data, $product_id) {
 
     $custom_fields = $this->get_custom_fields($product_id);
     if (!$custom_fields) return $cart_item_data;
@@ -131,12 +150,37 @@ class ProductCustomFields {
 
       if ($type == "file") {
         if (!empty($_FILES[$name]['name'])) {
-          $upload = wp_upload_bits($_FILES[$name]['name'], null, file_get_contents($_FILES[$name]['tmp_name']));
-          if (isset($upload['error']) && $upload['error'] != 0) {
-            wc_add_notice(__('There was an error uploading the file. Please try again.', 'woocommerce'), 'error');
-          } else {
-            $cart_item_data[$name] = $upload;
+
+          // get current user id
+          $user_id = get_current_user_id();
+
+          // upload file to the orders folder
+          $upload_dir = wp_upload_dir();
+          $main_upload_path = $upload_dir['basedir'] . "/{$this->upload_folder}/";
+          $upload_path = $main_upload_path . "{$user_id}/";
+          $upload_url = $upload_dir['baseurl'] . "/{$this->upload_folder}/$user_id/";
+          // create directory if it doesn't exist
+          if (!file_exists($main_upload_path)) mkdir($main_upload_path, 0755, true);
+          if (!file_exists($upload_path)) mkdir($upload_path, 0755, true);
+
+          // Uploaded file
+          $upload_file = $upload_path . basename($_FILES[$name]['name']);
+          $upload_url_file = $upload_url . basename($_FILES[$name]['name']);
+
+          // Check if file has right extension: pdf, jpg, jpeg
+          $file_type = mime_content_type($_FILES[$name]['tmp_name']);
+          if (!in_array($file_type, $this->allowed_mime_types)) {
+            wc_add_notice(__('Invalid file type. Please upload a valid file.', 'woocommerce'), 'error');
+            return $cart_item_data;
           }
+
+          // Upload file
+          move_uploaded_file($_FILES[$name]['tmp_name'], $upload_file);
+
+          // save file data to cart item data
+          $cart_item_data[$name] = $upload_file;
+          $cart_item_data[$name . '_file_name'] = basename($upload_file);
+          $cart_item_data[$name . '_url'] = '/ajax/force-open/?file_path=' . $upload_url_file;
         }
       } else {
         if (isset($_POST[$name])) {
@@ -148,10 +192,9 @@ class ProductCustomFields {
     return $cart_item_data;
   }
 
-  // --------------------------------------------------------- 
-  // Display on cart, checkout
-  // --------------------------------------------------------- 
-
+  /**
+   * Display custom fields on cart and checkout
+   */
   public function display_custom_field($item_data, $cart_item) {
 
     $product_id = $cart_item['product_id'];
@@ -169,7 +212,7 @@ class ProductCustomFields {
           $file_name = basename($cart_item[$name]['file']);
           $item_data[] = array(
             'key'     => __($label, 'woocommerce'),
-            'value'   => '<a href="' . esc_url($cart_item[$name]['url']) . '" target="_blank">' . $file_name . '</a>',
+            'value'   => $file_name,
           );
         }
       } else {
@@ -187,41 +230,9 @@ class ProductCustomFields {
     return $item_data;
   }
 
-  // --------------------------------------------------------- 
-  // Display on order
-  // --------------------------------------------------------- 
-
-  // Display the custom field on order
-  public function display_custom_field_on_order($item, $cart_item_key, $values, $order) {
-
-    $product_id = $item->get_product_id();
-    $custom_fields = $this->get_custom_fields($product_id);
-
-    if ($custom_fields) {
-      foreach ($custom_fields as $custom_field) {
-
-        $type = $custom_field['acf_fc_layout'];
-        $label = $custom_field['label'];
-        $name = $this->field_name($label);
-
-        if ($type == "file") {
-          $file_field = isset($values[$name]) ? $values[$name] : '';
-          if ($file_field) {
-            $file_name = basename($file_field['file']);
-            echo '<br><strong>' . __($label) . ':</strong> <a href="' . esc_url($file_field['url']) . '" target="_blank">' . $file_name . '</a>';
-          }
-        } else {
-          $value = isset($values[$name]) ? $values[$name] : '';
-          if (!empty($value)) $item->add_meta_data($this->label, $value);
-        }
-      }
-    }
-  }
-
-  // --------------------------------------------------------- 
-  // Validate
-  // --------------------------------------------------------- 
-
+  /**
+   * Validate custom fields on cart and checkout
+   */
   public function validate_custom_field($passed, $product_id, $quantity) {
 
     $custom_fields = $this->get_custom_fields($product_id);
@@ -240,7 +251,7 @@ class ProductCustomFields {
             $text = sprintf(__("Please upload a file for %s", 'woocommerce'), $label);
             wc_add_notice($text, 'error');
           } else {
-            $allowed_mime_types = array('image/jpeg', 'image/png', 'application/pdf');
+            $allowed_mime_types = $this->allowed_mime_types;
             $file_type = mime_content_type($_FILES[$name]['tmp_name']);
             if (!in_array($file_type, $allowed_mime_types)) {
               $passed = false;
@@ -258,5 +269,38 @@ class ProductCustomFields {
     }
 
     return $passed;
+  }
+
+  // --------------------------------------------------------- 
+  // Orders
+  // --------------------------------------------------------- 
+
+  /**
+   * Save custom fields to order
+   * They will be automatically displayed on the order page
+   */
+  function order_save_custom_fields($item, $cart_item_key, $values, $order) {
+
+    $product_id = $item->get_product_id();
+    $custom_fields = $this->get_custom_fields($product_id);
+
+    if ($custom_fields) {
+      foreach ($custom_fields as $custom_field) {
+        $type = $custom_field['acf_fc_layout'];
+        $label = $custom_field['label'];
+        $name = $this->field_name($label);
+
+        // Get the value of this custom field from the cart item
+        if ($type == "file") {
+          $file_name = $values[$name . '_file_name'];
+          $file_url = $values[$name . '_url'];
+          $value = "<a href='{$file_url}?TB_iframe=true&width=640&height=480' target='_blank' class='thickbox uikit-lightbox'>$file_name</a>";
+          $item->add_meta_data($label, $value);
+        } else {
+          $value = !empty($values[$name]) ? $values[$name] : '';
+          $item->add_meta_data($label, $value);
+        }
+      }
+    }
   }
 }

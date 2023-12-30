@@ -10,11 +10,11 @@ $user = wp_get_current_user();
     <h3 class="uk-h4 uk-text-light uk-margin-large-top"><?= sprintf(__x('Hello %s'), $user->display_name); ?></h3>
 
     <?php
-      tpf_render('layout/user/user-nav', [
-        // 'class' => "uk-nav-primary uk-margin-auto-vertical",
-        'class' => 'uk-nav-primary',
-        'attr' => 1,
-      ]);
+    render('layout/user/user-nav', [
+      // 'class' => "uk-nav-primary uk-margin-auto-vertical",
+      'class' => 'uk-nav-primary',
+      'attr' => 1,
+    ]);
     ?>
 
   </div>

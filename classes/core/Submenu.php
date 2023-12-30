@@ -2,12 +2,23 @@
 
 /**
  * Submenu
- * Crewte a admin submenu under the project menu
+ * Create a admin submenu under the project menu
  */
 
 namespace TPF;
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 class Submenu {
+
+  public $title;
+  public $slug;
+  public $view;
+  public $parent;
+  public $position;
+  public $plugin;
 
   public function __construct($data) {
 

@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 if (function_exists('acf_add_local_field_group')) :
 
   acf_add_local_field_group(array(
@@ -12,7 +16,7 @@ if (function_exists('acf_add_local_field_group')) :
         'name' => 'seo_title',
         'aria-label' => '',
         'type' => 'textarea',
-        'instructions' => 'You can use fields from the site settings eg: {site_name}, {tagline}',
+        'instructions' => 'You can use fields from the site settings eg: {name}, {description}',
         'required' => 0,
         'conditional_logic' => 0,
         'wrapper' => array(

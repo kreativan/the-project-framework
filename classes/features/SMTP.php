@@ -1,13 +1,18 @@
-<?php namespace TPF;
+<?php
+
+namespace TPF;
+
+if (!defined('ABSPATH')) {
+  exit;
+}
 
 class SMTP {
 
   public function __construct() {
 
-    if(tpf_settings('smtp_enable')) {
-      add_action( 'phpmailer_init', [$this, 'enable_smtp'] );
+    if (tpf_settings('smtp_enable')) {
+      add_action('phpmailer_init', [$this, 'enable_smtp']);
     }
-
   }
 
   public function enable_smtp($phpmailer) {
@@ -23,8 +28,5 @@ class SMTP {
     $phpmailer->SMTPSecure = tpf_settings('smtp_secure');
     $phpmailer->Username = tpf_settings('smtp_username');
     $phpmailer->Password = tpf_settings('smtp_password');
-
   }
-
-
 }

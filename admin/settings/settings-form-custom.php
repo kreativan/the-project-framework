@@ -6,6 +6,11 @@
  *  @link http://kraetivan.dev
  */
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
+
 $project_arr = [];
 $developer_arr = [];
 $users_arr = [];
@@ -67,6 +72,7 @@ if (class_exists('WooCommerce')) {
 <h1 class="p-margin">
   <span class="dashicons dashicons-admin-generic" style="font-size: 1em;margin-right:5px;position:relative;top:-3px"></span>
   The Project Framework
+  <img class="htmx-indicator" src="/wp-admin/images/spinner.gif" />
 </h1>
 
 <hr class="p-margin" />
@@ -82,14 +88,14 @@ if (class_exists('WooCommerce')) {
     }
     ?>
     <li>
-      <a class="p-tabs-nav <?= $active ?>" href="<?= admin_url() . "options-general.php?page=project-settings&tab=$id" ?>">
+      <a class="p-tabs-nav <?= $active ?>" href="<?= admin_url() . "options-general.php?page=project-settings&tab=$id" ?>" hx-get="./options-general.php?page=project-settings&tab=<?= $id ?>" hx-select="#wpbody-content" hx-target="#wpbody-content" hx-swap="outerHTML" hx-indicator=".htmx-indicator">
         <?= $label ?>
       </a>
     </li>
   <?php endforeach; ?>
 </ul>
 
-<form id="tpf-settings-form" class="p-form p-margin-remove" action="options.php" method="post">
+<form id="tpf-settings-form" class="p-form p-margin-remove" action="options.php" method="post" hx-boost="true" hx-indicator=".htmx-indicator">
 
   <?php
   settings_fields('project_settings');
@@ -116,11 +122,6 @@ if (class_exists('WooCommerce')) {
         "button" => 1,
         "margin" => 0,
       ]);
-      if ($key == "users") {
-        echo "<div>";
-        include('_user-groups.php');
-        echo "</div>";
-      }
       ?>
     </div>
   <?php endforeach; ?>

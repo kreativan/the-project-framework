@@ -1,0 +1,99 @@
+# Copyright (C) 2023 kreativan.dev
+# This file is distributed under the same license as the The Project Framework plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: The Project Framework 0.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/the-project-"
+"framework\n"
+"Last-Translator: \n"
+"Language-Team: French (France)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-09-15T14:13:28+00:00\n"
+"PO-Revision-Date: 2023-10-18 14:40+0000\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Domain: the-project-framework\n"
+"Language: fr_FR\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Loco-Version: 2.6.6; wp-6.3.2"
+
+#. Plugin Name of the plugin
+msgid "The Project Framework"
+msgstr ""
+
+#. Description of the plugin
+msgid "Framework for building custom websites"
+msgstr ""
+
+#. Author of the plugin
+msgid "kreativan.dev"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://kreativan.dev/"
+msgstr ""
+
+#: ajax/user/lost-password.php:18
+msgid "Success! Please check your email."
+msgstr "Succès! Merci de consulter vos emails."
+
+#: ajax/user/reset-password.php:24
+msgid "Password is required"
+msgstr "Mot de passe requis"
+
+#: ajax/user/reset-password.php:29
+msgid "Passwords do NOT match"
+msgstr "Les mots de passe ne correspondent pas"
+
+#: ajax/user/reset-password.php:35
+msgid "Success! Your password has been updated"
+msgstr "Succès! Votre mot de passe a été mis à jour"
+
+#: ajax/woo/add-to-cart.php:19
+msgid "Product ID is missing"
+msgstr "L'identifiant du produit est manquant"
+
+#: ajax/woo/add-to-cart.php:30
+msgid "%s has been added to your cart."
+msgstr "%s a été ajouté à votre panier."
+
+#: ajax/woo/remove-from-cart.php:36
+msgid "%s has been removed from cart"
+msgstr "%s a été supprimé du panier"
+
+#: ajax/woo/review-submit.php:28
+msgid "Review cannot be empty."
+msgstr "Le commentaire ne peut pas être vide."
+
+#: ajax/woo/review-submit.php:32
+msgid "Rating is required."
+msgstr "Une notation est requise."
+
+#: ajax/woo/review-submit.php:60
+msgid "Review submitted successfully."
+msgstr "Commentaire soumis avec succès."
+
+#: ajax/woo/review-submit.php:65
+msgid "Something went wrong."
+msgstr "Quelque chose s'est mal passé."
+
+#: layout/user/lost-password.php:2
+msgid ""
+"Please enter your username or email address. You will receive an email "
+"message with instructions on how to reset your password."
+msgstr ""
+"Veuillez saisir votre identifiant ou adresse mail. Vous recevrez un e-mail "
+"contenant des instructions sur la façon de réinitialiser votre mot de passe."
+
+#: layout/user/lost-password.php:14 layout/user/reset-password.php:31
+msgid "Reset Password"
+msgstr "réinitialiser le mot de passe"
+
+#: layout/user/reset-password.php:13
+msgid "New password"
+msgstr "Nouveau mot de passe"
+
+#: layout/user/reset-password.php:20
+msgid "Repeat new password"
+msgstr "Répété le nouveau mot de passe"

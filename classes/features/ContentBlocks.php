@@ -2,6 +2,10 @@
 
 namespace TPF;
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 class Content_Blocks {
 
   public function __construct($init = false) {
@@ -15,6 +19,7 @@ class Content_Blocks {
         "icon" => "dashicons-feedback",
         "menu_position" => 5,
         "submenu_title" => "Content Blocks",
+        "show_in_menu" => 'site-settings',
         "supports" => ['title'],
         "admin_columns" => [
           'id' => 'ID',
@@ -36,7 +41,7 @@ class Content_Blocks {
         ob_start();
         $id = $attr['id'];
         $content_block = get_post($id);
-        tpf_render("layout/blocks/{$content_block->post_name}.php");
+        render("layout/blocks/{$content_block->post_name}.php");
         $content = ob_get_clean();
         return $content;
       });

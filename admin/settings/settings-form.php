@@ -1,12 +1,18 @@
-<?php 
+<?php
+
 /**
  * The Project Settings
  */
 
-$dashicons = file_get_contents(plugin_dir_path(__FILE__)."../lib/json/dashicons.json");
-$dashicons =json_decode($dashicons, true);
+if (!defined('ABSPATH')) {
+  exit;
+}
 
-if(isset($_POST["project_info_form_submit"])) {
+
+$dashicons = file_get_contents(plugin_dir_path(__FILE__) . "../lib/json/dashicons.json");
+$dashicons = json_decode($dashicons, true);
+
+if (isset($_POST["project_info_form_submit"])) {
   $json_file = get_template_directory() . "/the-project.json";
   $json_data = json_encode($_POST);
   file_put_contents($json_file, $json_data);
@@ -25,13 +31,11 @@ if(isset($_POST["project_info_form_submit"])) {
         <th>Icon</th>
         <td>
           <select name="icon">
-            <?php foreach($dashicons as $key => $val) : ?>
-              <option value="dashicons-<?= $key ?>"
-                <?= the_project('icon') == "dashicons-$key" ? "selected" : "" ?>
-              >
+            <?php foreach ($dashicons as $key => $val) : ?>
+              <option value="dashicons-<?= $key ?>" <?= the_project('icon') == "dashicons-$key" ? "selected" : "" ?>>
                 <?= $key ?>
               </option>
-            <?php endforeach;?>
+            <?php endforeach; ?>
           </select>
         </td>
       </tr>
@@ -47,27 +51,22 @@ if(isset($_POST["project_info_form_submit"])) {
 
 <div class="p-card p-padding p-margin">
   <form class="p-form" action="options.php" method="post">
-    <?php 
-      settings_fields('project_settings');
-      do_settings_sections('project-settings');
+    <?php
+    settings_fields('project_settings');
+    do_settings_sections('project-settings');
     ?>
     <table class="form-table" role="presentation">
       <tbody>
-      <tr>
-        <th>Test</th>
-        <td>
-          <input type="text" name="project_settings[test]" value="<?= the_project('test') ?>" />
-        </td>
-      </tr>
+        <tr>
+          <th>Test</th>
+          <td>
+            <input type="text" name="project_settings[test]" value="<?= the_project('test') ?>" />
+          </td>
+        </tr>
         <tr>
           <th scope="row"></th>
           <td>
-            <input
-              type="submit"
-              name="submit"
-              class="p-btn"
-              value="<?php esc_attr_e( 'Save' ); ?>"
-            />
+            <input type="submit" name="submit" class="p-btn" value="<?php esc_attr_e('Save'); ?>" />
           </td>
         </tr>
       <tbody>

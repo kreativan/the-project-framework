@@ -11,16 +11,29 @@
  *
  */
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 class Less_Compiler {
+
+  public $output_dir;
+  public $assets_folder;
+  public $assets_url;
+  public $cache_path;
+  public $cache_url;
 
   public function __construct($output_dir = "assets") {
 
-    $this->assets_folder = get_template_directory() . "/$output_dir/";
-    $this->assets_url = get_template_directory_uri() . "/$output_dir/";
+    $this->output_dir = $output_dir;
+    $this->assets_folder = get_template_directory() . "/{$this->output_dir}/";
+    $this->assets_url = get_template_directory_uri() . "/{$this->output_dir}/";
+    if (!file_exists($this->assets_folder)) mkdir($this->assets_folder, 0755, true);
 
     $this->cache_path = WP_CONTENT_DIR . "/less-cache/";
     $this->cache_url = content_url() . "/less-cache/";
-    $dir = WP_CONTENT_DIR . "/cache/";
+    if (!file_exists($this->cache_path)) mkdir($this->cache_path, 0755, true);
+    // $this->dir = WP_CONTENT_DIR . "/cache/";
   }
 
   /**

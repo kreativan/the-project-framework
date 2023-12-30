@@ -1,0 +1,52 @@
+@woo-orders-overview-padding: @global-gutter;
+@woo-orders-overview-border: 1px solid @global-border;
+@woo-orders-overview-border-radius: @border-rounded-border-radius;
+
+@woo-orders-column-title-font-size: 1.5rem;
+
+@woo-orders-ty-details-padding: @global-gutter;
+@woo-orders-ty-details-bg: @global-muted-background;
+
+@woo-orders-address-padding: @global-small-gutter;
+@woo-orders-address-background: @global-muted-background;
+@woo-orders-address-color: @global-emphasis-color;
+@woo-orders-address-border: 1px solid @global-border;
+
+// --------------------------------------------------------- 
+// Orders 
+// --------------------------------------------------------- 
+
+.woocommerce-order-overview {
+  padding: @woo-orders-overview-padding;
+  border: @woo-orders-overview-border;
+  border-radius: @woo-orders-overview-border-radius;
+}
+
+.woocommerce-thankyou-order-details {
+  margin-bottom: @global-margin !important;
+
+  & + p {
+    padding: @woo-orders-ty-details-padding;
+    background: @woo-orders-ty-details-bg;
+  }
+}
+
+.woocommerce-customer-details {
+
+  .woocommerce-column__title {
+    font-size: @woo-orders-column-title-font-size;
+  }
+
+  address {
+    display: block;
+    padding: @woo-orders-address-padding !important;
+    box-sizing: border-box;
+    border: @woo-orders-address-border !important;
+    background: @woo-orders-address-background;
+    color: @woo-orders-address-color;
+  }
+
+  .woocommerce-column + .woocommerce-column {
+    margin-top: @global-margin;
+  }
+}

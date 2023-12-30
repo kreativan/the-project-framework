@@ -6,7 +6,7 @@
     <div class="uk-modal-body">
       <h2>Login</h2>
       <?php
-        tpf_render('layout/user/login-form');
+      render('layout/user/login-form');
       ?>
     </div>
 

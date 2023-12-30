@@ -1,6 +1,10 @@
 <?php
 
-if (function_exists('acf_add_local_field_group')):
+if (!defined('ABSPATH')) {
+  exit;
+}
+
+if (function_exists('acf_add_local_field_group')) :
 
   acf_add_local_field_group(array(
     'key' => 'group_633c39c73ddfa',
@@ -92,10 +96,8 @@ if (function_exists('acf_add_local_field_group')):
           'class' => '',
           'id' => '',
         ),
-        'choices' => array(
-        ),
-        'default_value' => array(
-        ),
+        'choices' => array(),
+        'default_value' => array(),
         'return_format' => 'value',
         'multiple' => 1,
         'allow_null' => 0,

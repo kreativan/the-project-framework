@@ -49,7 +49,7 @@ $reviews = get_comments($args);
             <li class="uk-text-meta"><?= date('d M Y', strtotime($review_date)) ?></li>
             <li>
               <?php
-              tpf_render('layout/common/rating-stars', [
+              render('layout/common/rating-stars', [
                 'rating' => $rating,
                 'ratio' => '0.8',
                 // 'class' => "uk-margin-small",
@@ -65,7 +65,7 @@ $reviews = get_comments($args);
     <hr class="uk-margin-remove" />
     <div class="uk-padding-small">
       <p id="no-reviews" class="uk-text-muted">
-        <?= $paged > 1 ? __x('No more reviews.') :  __x('No reviews to display.') ?>
+        <?= $paged > 1 ? __('No more reviews.', 'the-project-framework') :  __('No reviews to display.', 'the-project-framework') ?>
       </p>
     </div>
   <?php endif; ?>
@@ -80,7 +80,7 @@ $reviews = get_comments($args);
 <?php else : ?>
   <div class="uk-padding-small" style="padding-top: 0;padding-bottom: 50px;">
     <button id="load-more-button" type="uk-button" hx-get="?htmx=/layout/woo/reviews-list/&product_id=<?= $product_id ?>&per_page=<?= $per_page ?>&paged=<?= $next_page ?>" hx-target="#review-list" hx-swap="beforeend" hx-select="#review-list" hx-select-oob="#load-more-button" hx-indicator="#reviews-htmx-indicator" class="uk-button uk-button-link uk-button-small uk-text-primary <?= count($reviews) < 1 ? 'uk-hidden' : '' ?>">
-      <?= __x('Load more') ?>
+      <?= __('Load more', 'the-project-framework') ?>
     </button>
   </div>
 <?php endif; ?>

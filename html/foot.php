@@ -1,31 +1,20 @@
 <?php
 
 /**
- * layout/base/foot.php
+ * html/foot.php
  */
 
-$google_analytics = get_field('google_analytics', 'options');
-
-?>
-
-<?php if ($google_analytics && $google_analytics != "") : ?>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=<?= $google_analytics ?>"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-
-    gtag('config', '<?= $google_analytics ?>');
-  </script>
-<?php endif; ?>
-
-<?php
+// WordPress Footer
 wp_footer();
+
+/**
+ * Scripts in footer
+ */
+$scripts_in_footer = get_field('scripts_in_footer', 'options');
+if (!empty($scripts_in_footer) && $scripts_in_footer != "") echo $scripts_in_footer;
+
 ?>
+
 
 <?php if (the_project('htmx')) : ?>
   <div id="htmx-page-indicator"></div>

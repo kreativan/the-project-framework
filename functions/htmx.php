@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 /**
  * Check if htmx is enabled globally on the project
  */

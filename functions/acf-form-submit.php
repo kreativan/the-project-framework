@@ -1,8 +1,10 @@
 <?php
 
-function acf_form_submit() {
+if (!defined('ABSPATH')) {
+  exit;
+}
 
-  $utility = new \TPF\Utility();
+function acf_form_submit() {
 
   if (!isset($_POST)) return;
   if (!isset($_POST['nonce'])) return;
@@ -87,7 +89,7 @@ function acf_form_submit() {
     //  Validate
     //-------------------------------------------------------- 
 
-    $v = $utility->valitron($_POST);
+    $v = TPF_Valitron($_POST, site_lang());
     $v->rule('required', $req_array);
     $v->rule('email', $email_array);
     $v->labels($labels_array);
@@ -194,7 +196,7 @@ function acf_form_submit() {
 
         $duplicate_message = get_field('duplicate_message', $form_id);
 
-        $duplicate_msg = tpf_str_replace($duplicate_message, $_POST);
+        $duplicate_msg = TPF_STR_Replace($duplicate_message, $_POST);
 
         $response["status"] = "warning";
         $response['modal'] =  $duplicate_msg;
@@ -210,7 +212,7 @@ function acf_form_submit() {
     if ($create_post && $allow_post) {
 
       $post_title = get_field('new_post_title', $form_id);
-      $post_title = $utility->str_replace($post_title, $_POST);
+      $post_title = TPF_STR_Replace($post_title, $_POST);
       $post_title = !empty($post_title) ? $post_title : $post_type_name;
 
       $meta_input = [];
@@ -242,7 +244,9 @@ function acf_form_submit() {
 
       // Admin email
       $admin_email = get_field('admin_email', $form_id);
+      $email = get_field('email', 'options');
       $site_email = get_field('site_email', 'options');
+      $site_email = !empty($site_email) ? $site_email : $email;
       $send_to = !empty($admin_email) ? $admin_email : $site_email;
       // from
       $mail_from_arr = explode(",", $send_to);
@@ -250,17 +254,19 @@ function acf_form_submit() {
 
       // Subject
       $subject = get_field('subject', $form_id);
-      $subject = $utility->str_replace($subject, $_POST);
-      $subject = !empty($subject) ? $subject : "Website form submition";
+      $subject = TPF_STR_Replace($subject, $_POST);
+      $subject = !empty($subject) ? $subject : "Website form submission";
 
       // reply to
       $reply_to = $_POST['email'];
-      foreach ($form_fields as $f) {
-        if ($f['acf_fc_layout'] == 'email') {
-          $name = $f['name'];
-          if (empty($name)) $name = sanitize_key($f['label']);
-          if (!empty($_POST[$name])) $reply_to = sanitize_text_field($_POST[$name]);
-          break;
+      if (!isset($reply_to) || empty($reply_to)) {
+        foreach ($form_fields as $f) {
+          if ($f['acf_fc_layout'] == 'email') {
+            $name = $f['name'];
+            if (empty($name)) $name = sanitize_key($f['label']);
+            if (!empty($_POST[$name])) $reply_to = sanitize_text_field($_POST[$name]);
+            break;
+          }
         }
       }
 
@@ -268,7 +274,8 @@ function acf_form_submit() {
       $headers = [];
       $headers[] = 'Content-Type: text/html; charset=UTF-8';
       if (the_project('smtp_enable') != '1') {
-        $headers[] = "From: Website <{$mail_from}>";
+        $from_name = site_settings('site_name');
+        $headers[] = "From: {$from_name} <{$mail_from}>";
       }
       $headers[] = "Reply-to: $reply_to";
 
@@ -299,7 +306,7 @@ function acf_form_submit() {
         $email_body = get_field('email_body', $form_id);
 
         if (!empty($email_body)) {
-          $email_body = $utility->str_replace($email_body, $_POST);
+          $email_body = TPF_STR_Replace($email_body, $_POST);
         } else {
           $email_body = $message;
         }
@@ -314,9 +321,9 @@ function acf_form_submit() {
     //  Response
     // ===========================================================
     $title = get_field('success_title', $form_id);
-    $title = $utility->str_replace($title, $_POST);
+    $title = TPF_STR_Replace($title, $_POST);
     $text = get_field('success_message', $form_id);
-    $text = $utility->str_replace($text, $_POST);
+    $text = TPF_STR_Replace($text, $_POST);
     $response_text = !empty($title) ? "<h3>$title</h3>" : '';
     $response_text .= !empty($text) ? "<p>$text</p>" : '';
     $response["modal"] =  $response_text;

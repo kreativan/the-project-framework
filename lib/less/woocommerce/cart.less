@@ -45,11 +45,6 @@
 
     }
 
-    .button {
-      background: white !important;
-      border: 1px solid @global-border !important;
-    }
-
     @media(min-width: @breakpoint-medium) {
 
       button[name="update_cart"] {
@@ -98,29 +93,49 @@
       border: none !important;
       box-sizing: border-box !important;
       text-align: center !important;
+      padding: 5px 10px !important;
 
       &.product-subtotal {
         font-weight: bold;
+        font-size: 1.1rem;
+        padding: 10px 10px !important;
+      }
+
+      .variation {
+        display: flex;
+        justify-content: center;
+
+        dd {
+          margin-right: 5px !important;
+        }
       }
     }
-
-    .product-remove {
-      position: relative;
-
-      .remove {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-      }
-    }
-
   }
+
+  .product-remove {
+    position: relative;
+
+    .remove {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
+  }
+
 }
 
-.woocommerce .cart-collaterals {
+.woocommerce {
 
-  .order-total {
-    color: @woo-cart-total-color;
+  .cross-sells {
+    margin: @global-medium-margin 0;
+  }
+
+  .cart-collaterals {
+
+    .order-total {
+      color: @woo-cart-total-color;
+    }
+
   }
 
 }

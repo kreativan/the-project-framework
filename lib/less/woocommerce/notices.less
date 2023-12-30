@@ -27,6 +27,10 @@
 // woo: notices.less
 // ========================================================= 
 
+.woocommerce-notice {
+  padding: 1em 2em;
+}
+
 .woocommerce-message,
 .woocommerce-info,
 .woocommerce-error {
@@ -43,11 +47,13 @@
 
     &:hover {
       background: fade(white, 90%) !important;
+      color: @global-emphasis-color !important;
     }
   }
 
 }
 
+.woocommerce-notice--success,
 .woocommerce-message {
 
   background: @woo-notice-message-bg !important;

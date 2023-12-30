@@ -30,12 +30,12 @@ $site_name = !empty($site_name) ? $site_name : site_settings("site_name");
 
       <div id="navigation" class="uk-navbar-center">
         <?php
-        tpf_render('layout/menu/navbar-wp');
+        render('layout/menu/navbar-wp');
         ?>
       </div>
 
       <div id="actions" class="uk-navbar-right">
-        <a href="#" class="uk-button uk-button-primary uk-button-small">
+        <a href="#" class="uk-button uk-button-primary uk-button-small" <?= htmx_modal('layout/htmx/modal/') ?>>
           Button
         </a>
       </div>

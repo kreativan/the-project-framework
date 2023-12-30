@@ -2,6 +2,10 @@
 
 namespace TPF;
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 class Users {
 
   public function __construct() {
@@ -29,7 +33,7 @@ class Users {
      */
     add_shortcode('tpf_login_form', function () {
       ob_start();
-      tpf_render("layout/user/login-form");
+      render("layout/user/login-form");
       $content = ob_get_clean();
       return $content;
     });

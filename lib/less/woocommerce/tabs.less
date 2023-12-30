@@ -10,12 +10,19 @@
 
   .tabs {
     padding: 0 !important;
+
+    &:before {
+      border-bottom-color: @global-border !important;
+    }
   }
 
   .tabs li {
     background: none !important;
     margin: 0 !important;
     padding: @woo-tabs-padding !important;
+    border-top-color: @global-border !important;
+    border-left-color: @global-border !important;
+    border-right-color: @global-border !important;
 
     &:before,
     &:after {

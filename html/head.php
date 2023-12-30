@@ -90,6 +90,49 @@ $google_fonts_link = !empty($google_fonts_link) ? $google_fonts_link : "";
   <?php endif; ?>
 </script>
 
+<script>
+  /**
+   * Use uikit notifications instead of default browser alerts
+   */
+  window.alert = function(message) {
+    UIkit.notification({
+      message: message,
+      status: 'warning',
+      timeout: 2000
+    });
+  };
+</script>
+
+<?php if (the_project('uikit_lightbox')) : ?>
+  <script>
+    /**
+     * Trigger uikit lightbox
+     * for all elements with class .uikit-lightbox
+     */
+    window.addEventListener('DOMContentLoaded', function() {
+      let items = document.querySelectorAll('.uikit-lightbox');
+      if (items.length > 0) {
+        items.forEach(item => {
+          item.addEventListener('click', function(e) {
+            e.preventDefault();
+            let el = event.target;
+            let href = el.getAttribute('href');
+            href = href ? href : el.getAttribute('data-href');
+            let my_items = [{
+              source: href,
+              type: 'iframe',
+            }];
+            UIkit.lightboxPanel({
+              items: my_items,
+              animation: 'scale',
+            }).show(0);
+          });
+        });
+      }
+    });
+  </script>
+<?php endif; ?>
+
 <?php
 do_action("tpf_head");
 ?>

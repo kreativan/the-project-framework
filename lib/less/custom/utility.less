@@ -6,6 +6,8 @@
 
 @tm-font-mono: 'Courier New', Courier, monospace;
 
+@tm-border-primary: @global-primary-background;
+
 //  Layout
 // ===========================================================
 
@@ -50,6 +52,11 @@
   line-height: 1;
 }
 
+
+.tm-text-balance {
+  text-wrap: balance;
+}
+
 //  Reset
 // ===========================================================
 
@@ -85,5 +92,5 @@
 }
 
 .tm-border-primary {
-  border: 1px solid @global-primary-background;
+  border: 1px solid @tm-border-primary;
 }

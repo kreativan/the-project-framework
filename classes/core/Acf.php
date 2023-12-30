@@ -8,11 +8,16 @@
 
 namespace TPF;
 
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 class ACF {
 
   public function __construct() {
 
     if (is_admin()) {
+      add_filter('acf/fields/flexible_content/layout_title/name=page_builder', [$this, 'page_builder_labels'], 10, 4);
       add_filter('acf/load_field/name=user_roles', [$this, 'populate_user_roles']);
       add_filter('acf/load_field/name=select_post_type', [$this, 'populate_post_type']);
       add_filter('acf/load_field/name=pb_style', [$this, 'populate_pb_style']);
@@ -21,10 +26,38 @@ class ACF {
     }
 
     if (function_exists('acf_add_local_field_group')) {
-
       // Options (site settings field group)
-      tpf_acf_group_init('options');
+      TPF_ACF_Group_Init('options');
+
+      // Menu Items
+      TPF_ACF_Group_Init('menu_item');
     }
+  }
+
+  //-------------------------------------------------------- 
+  //  Flexible Field
+  //--------------------------------------------------------
+
+  /**
+   * Set layout labels based on the title or headline fields
+   */
+  public function page_builder_labels($title, $field, $layout, $i) {
+
+    $subfield_title = get_sub_field("title");
+    $subfield_headline = get_sub_field("headline");
+    $subfield_enable = get_sub_field("enable");
+
+    if ($subfield_title && !empty($subfield_title)) {
+      $title =  $title . " - " . $subfield_title;
+    } elseif ($subfield_headline && !empty($subfield_headline)) {
+      $title = $title . " - " . $subfield_headline;
+    }
+
+    if (!$subfield_enable) {
+      $title .= " - <span style='color: #f87171;'>(DISABLED)</span>";
+    }
+
+    return $title;
   }
 
   //-------------------------------------------------------- 
@@ -56,41 +89,30 @@ class ACF {
 
   public function populate_pb_style($field) {
     $field['choices'] = [];
-    $arr = [
-      'default' => 'Default',
-      'primary' => 'Primary',
-      'secondary' => 'Secodnary',
-      'muted' => 'Muted',
-    ];
+    $lib_file = tpf_dir() . "lib/json/pb_style.json";
+    $tmpl_file = get_template_directory() . '/assets/json/pb_style.json';
+    $json_file = file_exists($tmpl_file) ? $tmpl_file : $lib_file;
+    $arr = json_decode(file_get_contents($json_file), true);
     $field['choices'] = $arr;
     return $field;
   }
 
   public function populate_pb_space($field) {
     $field['choices'] = [];
-    $arr = [
-      'normal' => 'Normal',
-      'small' => 'Small',
-      'medium' => 'Medium',
-      'large' => 'Large',
-      'xlarge' => 'xLarge',
-      'no-space' => 'No Space',
-    ];
+    $lib_file = tpf_dir() . "lib/json/pb_space.json";
+    $tmpl_file = get_template_directory() . '/assets/json/pb_space.json';
+    $json_file = file_exists($tmpl_file) ? $tmpl_file : $lib_file;
+    $arr = json_decode(file_get_contents($json_file), true);
     $field['choices'] = $arr;
     return $field;
   }
 
   public function populate_pb_grid($field) {
     $field['choices'] = [];
-    $arr = [
-      'expand' => 'Expand',
-      '1-1' => '1',
-      '1-2' => '2',
-      '1-3' => '3',
-      '1-4' => '4',
-      '1-5' => '5',
-      '1-6' => '6',
-    ];
+    $$lib_file = tpf_dir() . "lib/json/pb_grid.json";
+    $tmpl_file = get_template_directory() . '/assets/json/pb_grid.json';
+    $json_file = file_exists($tmpl_file) ? $tmpl_file : $lib_file;
+    $arr = json_decode(file_get_contents($json_file), true);
     $field['choices'] = $arr;
     return $field;
   }

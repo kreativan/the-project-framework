@@ -1,6 +1,6 @@
 <?php
 // menu position
-$menu = !empty($menu) ? $menu : 'mobile-menu';
+$menu = !empty($menu) ? $menu : 'mobile';
 
 if (has_nav_menu($menu)) {
   wp_nav_menu([

@@ -1,0 +1,1 @@
+You can override this files in your theme folder `/my-theme/assets/acf/`.
